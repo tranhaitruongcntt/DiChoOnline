@@ -9,7 +9,7 @@ export default function Footer() {
     <footer className="mt-16 border-t border-stone-200 bg-white">
       <div className="container-x grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="flex items-center gap-2 text-lg font-extrabold text-brand-800"><ShoppingBasket className="h-5 w-5" aria-hidden /> {site.name}</p>
+          <p className="font-display flex items-center gap-2 text-lg font-bold text-brand-800"><ShoppingBasket className="h-5 w-5" aria-hidden /> {site.name}</p>
           <p className="mt-2 text-sm leading-relaxed text-stone-600">{site.description}</p>
         </div>
         <div>

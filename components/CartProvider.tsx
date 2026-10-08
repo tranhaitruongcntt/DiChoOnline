@@ -12,6 +12,8 @@ type CartCtx = {
   setQty: (id: number, qty: number) => void;
   remove: (id: number) => void;
   clear: () => void;
+  /** Sản phẩm vừa thêm gần nhất – dùng cho thông báo nhỏ (toast) */
+  lastAdded: { name: string; image?: string | null; at: number } | null;
 };
 
 const KEY = "dicho_cart_v1";
@@ -33,6 +35,7 @@ function load(): CartItem[] {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [ready, setReady] = useState(false);
+  const [lastAdded, setLastAdded] = useState<CartCtx["lastAdded"]>(null);
 
   useEffect(() => {
     setItems(load());
@@ -48,6 +51,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items, ready]);
 
   const add = useCallback<CartCtx["add"]>((item, qty = 1) => {
+    setLastAdded({ name: item.name, image: item.image, at: Date.now() });
     setItems((prev) => {
       const found = prev.find((i) => i.id === item.id);
       if (found) return prev.map((i) => (i.id === item.id ? { ...i, ...item, qty: Math.min(i.qty + qty, item.maxQty, 99) } : i));
@@ -63,11 +67,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(
     () => ({
-      items, ready, add, setQty, remove, clear,
+      items, ready, add, setQty, remove, clear, lastAdded,
       count: items.reduce((s, i) => s + i.qty, 0),
       subtotal: items.reduce((s, i) => s + i.qty * i.price, 0),
     }),
-    [items, ready, add, setQty, remove, clear],
+    [items, ready, add, setQty, remove, clear, lastAdded],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

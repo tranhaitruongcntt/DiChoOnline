@@ -20,7 +20,7 @@ export default function ProductVisual({
         src={image} alt={name} width={800} height={800}
         sizes={size === "lg" ? "(min-width: 1024px) 50vw, 100vw" : size === "sm" ? "96px" : "(min-width: 1280px) 220px, (min-width: 640px) 30vw, 50vw"}
         priority={priority} unoptimized={!image.startsWith("/")}
-        className="aspect-square w-full rounded-xl bg-stone-100 object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        className="aspect-square w-full rounded-xl bg-stone-100 object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
       />
     );
   }

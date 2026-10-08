@@ -8,15 +8,15 @@ import { site } from "@/lib/site";
 export default function Header() {
   const categories = getCategories();
   return (
-    <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/90 backdrop-blur">
+    <header className="header-elevate sticky top-0 z-40 border-b border-stone-200/80 bg-white/90 backdrop-blur-md">
       <div className="bg-brand-700 text-center text-xs text-brand-50">
         <p className="container-x flex items-center justify-center gap-1.5 py-1.5"><Truck className="h-3.5 w-3.5" aria-hidden /> Miễn phí giao hàng cho đơn từ 300.000đ<span className="hidden sm:inline">&nbsp;· Hotline&nbsp;</span><a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hidden font-semibold underline-offset-2 hover:underline sm:inline">{site.phone}</a></p>
       </div>
       <div className="container-x flex items-center gap-3 py-3 sm:gap-6">
-        <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${site.name} – Trang chủ`}>
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-sm"><ShoppingBasket className="h-5 w-5" aria-hidden /></span>
+        <Link href="/" className="group flex shrink-0 items-center gap-2" aria-label={`${site.name} – Trang chủ`}>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-sm transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105"><ShoppingBasket className="h-5 w-5" aria-hidden /></span>
           <span className="hidden leading-tight sm:block">
-            <span className="block text-lg font-extrabold tracking-tight text-brand-800">Đi Chợ Online</span>
+            <span className="font-display block text-lg font-bold tracking-tight text-brand-800">Đi Chợ Online</span>
             <span className="block text-[11px] text-stone-500">Tươi mỗi ngày · Giao 2 giờ</span>
           </span>
         </Link>
@@ -32,7 +32,7 @@ export default function Header() {
         <ul className="container-x flex gap-1 overflow-x-auto py-2 text-sm [scrollbar-width:none]">
           {categories.map((c) => (
             <li key={c.id}>
-              <Link href={`/danh-muc/${c.slug}`} className="flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 font-medium text-stone-600 transition hover:bg-brand-50 hover:text-brand-700">
+              <Link href={`/danh-muc/${c.slug}`} className="flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 font-medium text-stone-600 transition-colors duration-200 hover:bg-brand-50 hover:text-brand-700">
                 <ProductIcon name={c.icon} className="h-4 w-4 text-brand-600" />{c.name}
               </Link>
             </li>

@@ -14,17 +14,40 @@
   --color-brand-900: #11432e;
   --color-accent-400: #fbbf24;
   --color-accent-500: #f59e0b;
+
+  --font-display: var(--font-lexend), var(--font-be-vietnam), ui-sans-serif, system-ui, sans-serif;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.8s var(--ease-out-expo) both;
+  --animate-fade-in: fade-in 0.6s ease-out both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-pop: pop 0.45s var(--ease-spring);
+  --animate-toast-in: toast-in 0.4s var(--ease-out-expo) both;
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+  @keyframes toast-in { from { opacity: 0; transform: translateY(16px) scale(0.96); } to { opacity: 1; transform: none; } }
 }
 
+/* Hiện dần khi cuộn tới (CSS scroll-driven, không cần JS; trình duyệt chưa hỗ trợ thì hiển thị bình thường) */
+@keyframes reveal { from { opacity: 0; transform: translateY(28px) scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes header-elevate { to { box-shadow: 0 8px 30px -14px rgb(0 0 0 / 0.28); } }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
 @layer base {
-  html { -webkit-tap-highlight-color: transparent; }
+  html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; text-rendering: optimizeLegibility; }
+  h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.015em; }
+  ::selection { @apply bg-brand-200 text-brand-900; }
   body { @apply bg-stone-50 text-stone-800 antialiased; }
   :focus-visible { @apply outline-2 outline-offset-2 outline-brand-500; }
 }
 
 @utility container-x { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
-@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50; }
-@utility btn-primary { @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:scale-[.98]; }
+@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ease-out active:scale-[.97] disabled:cursor-not-allowed disabled:opacity-50; }
+@utility btn-primary { @apply btn bg-brand-600 text-white shadow-sm shadow-brand-900/10 hover:bg-brand-700 hover:shadow-md hover:shadow-brand-900/20; }
 @utility btn-outline { @apply btn border border-stone-300 bg-white text-stone-700 hover:border-brand-500 hover:text-brand-700; }
 @utility btn-danger { @apply btn bg-rose-600 text-white hover:bg-rose-700; }
 @utility card { @apply rounded-2xl border border-stone-200/80 bg-white shadow-sm; }
@@ -33,4 +56,40 @@
 @utility badge { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold; }
 @utility prose-vi {
   & p { @apply mb-3 leading-relaxed text-stone-600; }
+}
+
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 22%;
+  }
+}
+@utility header-elevate {
+  @supports (animation-timeline: scroll()) {
+    animation: header-elevate linear both;
+    animation-timeline: scroll();
+    animation-range: 0 140px;
+  }
+}
+@utility skeleton {
+  @apply relative overflow-hidden rounded-xl bg-stone-200/70;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.6), transparent);
+    animation: shimmer 1.4s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, .header-elevate { animation: none !important; }
 }

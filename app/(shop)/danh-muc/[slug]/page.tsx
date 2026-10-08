@@ -32,10 +32,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   return (
     <div className="container-x py-8">
       <Breadcrumbs items={[{ name: c.name, href: `/danh-muc/${c.slug}` }]} />
-      <header className="mt-4 flex flex-col gap-4 rounded-3xl bg-gradient-to-r from-brand-50 to-emerald-50 p-6 ring-1 ring-brand-100 sm:flex-row sm:items-center">
+      <header className="mt-4 flex animate-fade-up flex-col gap-4 rounded-3xl bg-gradient-to-r from-brand-50 to-emerald-50 p-6 ring-1 ring-brand-100 sm:flex-row sm:items-center">
         <span className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-white text-5xl shadow-sm" aria-hidden>{c.icon}</span>
         <div>
-          <h1 className="text-3xl font-extrabold text-brand-900">{c.name}</h1>
+          <h1 className="text-3xl font-bold text-brand-900 sm:text-4xl">{c.name}</h1>
           <p className="mt-1 max-w-2xl text-stone-600">{c.description}</p>
         </div>
       </header>

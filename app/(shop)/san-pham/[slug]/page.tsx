@@ -39,7 +39,7 @@ export default async function ProductPage({ params }: Props) {
       <Breadcrumbs items={[{ name: p.category_name, href: `/danh-muc/${p.category_slug}` }, { name: p.name, href: `/san-pham/${p.slug}` }]} />
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
-        <div className="card group p-4">
+        <div className="card group animate-fade-up overflow-hidden p-4">
           <ProductVisual icon={p.icon} image={p.image} name={p.name} category={p.category_slug} size="lg" priority />
           {credit && (
             <p className="mt-2 text-xs text-stone-400">
@@ -47,13 +47,13 @@ export default async function ProductPage({ params }: Props) {
             </p>
           )}
         </div>
-        <div>
+        <div className="animate-fade-up [animation-delay:120ms]">
           <p className="text-sm font-semibold text-brand-700">Xuất xứ: {p.origin}</p>
-          <h1 className="mt-1 text-3xl font-extrabold leading-tight text-stone-900">{p.name}</h1>
+          <h1 className="mt-1 text-3xl font-bold leading-tight text-stone-900 sm:text-4xl">{p.name}</h1>
           <p className="mt-3 text-lg text-stone-600">{p.short_desc}</p>
 
           <div className="mt-6 flex items-end gap-3">
-            <span className="text-4xl font-extrabold text-brand-700">{formatPrice(p.price)}</span>
+            <span className="font-display text-4xl font-bold text-brand-700">{formatPrice(p.price)}</span>
             <span className="pb-1 text-stone-500">/ {p.unit}</span>
             {discount > 0 && (
               <>

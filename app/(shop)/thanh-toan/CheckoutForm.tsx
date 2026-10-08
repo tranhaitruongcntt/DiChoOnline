@@ -14,7 +14,7 @@ export default function CheckoutForm() {
   const [state, action, pending] = useActionState<CheckoutState, FormData>(placeOrder, {});
   const fe = state.fieldErrors ?? {};
 
-  if (!ready) return <div className="card mt-6 h-64 animate-pulse" />;
+  if (!ready) return <div className="skeleton mt-6 h-64 w-full rounded-2xl" />;
   if (!items.length)
     return (
       <div className="card mt-6 p-12 text-center">
