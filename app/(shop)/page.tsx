@@ -72,17 +72,17 @@ export default function HomePage() {
       </section>
 
       <section className="container-x mt-10" aria-label="Chương trình khuyến mãi">
-        <ul className="grid gap-4 md:grid-cols-3">
+        <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pb-1 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0">
           {PROMOS.map((p) => (
-            <li key={p.href} className="reveal">
-              <Link href={p.href} className={`group relative flex h-40 items-center overflow-hidden rounded-3xl bg-gradient-to-br ${p.bg} p-6 ring-1 ring-black/5 transition-shadow hover:shadow-lg`}>
-                <div className="relative z-10 max-w-[58%]">
+            <li key={p.href} className="w-[84%] shrink-0 snap-start sm:w-[60%] md:w-auto">
+              <Link href={p.href} className={`group relative flex h-36 items-center overflow-hidden rounded-3xl bg-gradient-to-br ${p.bg} p-5 ring-1 ring-black/5 transition-shadow hover:shadow-lg sm:h-40 sm:p-6`}>
+                <div className="relative z-10 max-w-[60%]">
                   <span className={`text-xs font-bold uppercase tracking-wider ${p.accent}`}>{p.tag}</span>
-                  <p className="mt-1 font-display text-xl font-bold leading-tight text-stone-900">{p.title}</p>
-                  <p className="mt-1 text-sm text-stone-600">{p.sub}</p>
+                  <p className="mt-1 font-display text-lg font-bold leading-tight text-stone-900 sm:text-xl">{p.title}</p>
+                  <p className="mt-1 line-clamp-2 text-xs text-stone-600 sm:text-sm">{p.sub}</p>
                   <span className={`mt-3 inline-flex items-center gap-1 text-sm font-semibold ${p.accent}`}>Mua ngay <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
                 </div>
-                <div className="absolute -right-6 top-1/2 h-40 w-40 -translate-y-1/2 overflow-hidden rounded-full shadow-xl ring-8 ring-white/60 transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3">
+                <div className="absolute -right-8 top-1/2 h-32 w-32 -translate-y-1/2 sm:-right-6 sm:h-40 sm:w-40 overflow-hidden rounded-full shadow-xl ring-8 ring-white/60 transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3">
                   <Image src={p.image} alt="" fill sizes="160px" className="object-cover" />
                 </div>
               </Link>
@@ -106,17 +106,17 @@ export default function HomePage() {
       {deals.length > 0 && (
         <section id="uu-dai" className="container-x mt-14 scroll-mt-40" aria-labelledby="ud">
           <div className="reveal overflow-hidden rounded-3xl bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 ring-1 ring-amber-100">
-            <div className="flex flex-col gap-4 bg-gradient-to-r from-rose-500 to-orange-500 px-5 py-4 text-white sm:flex-row sm:items-center sm:px-8">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 bg-gradient-to-r from-rose-500 to-orange-500 px-4 py-4 text-white sm:px-8">
               <h2 id="ud" className="flex items-center gap-2 text-2xl font-bold sm:text-3xl">
                 <Flame className="h-7 w-7 animate-pulse" aria-hidden /> Flash Sale
               </h2>
-              <div className="flex items-center gap-3 text-sm sm:ml-6">
+              <Link href="/khuyen-mai" className="ml-auto flex items-center gap-1 text-sm font-semibold hover:underline sm:order-last">Xem tất cả <ArrowRight className="h-4 w-4" /></Link>
+              <div className="flex w-full items-center gap-3 text-sm sm:w-auto">
                 <span className="flex items-center gap-1.5 text-white/90"><Clock className="h-4 w-4" /> Kết thúc sau</span>
                 <Countdown />
               </div>
-              <Link href="/khuyen-mai" className="flex items-center gap-1 text-sm font-semibold hover:underline sm:ml-auto">Xem tất cả <ArrowRight className="h-4 w-4" /></Link>
             </div>
-            <div className="p-4 sm:p-6"><ProductGrid products={deals} /></div>
+            <div className="p-3 sm:p-6"><ProductGrid products={deals} /></div>
           </div>
         </section>
       )}
@@ -132,11 +132,11 @@ export default function HomePage() {
       <section className="container-x mt-16" aria-label="Giao hàng nhanh">
         <div className="reveal relative overflow-hidden rounded-3xl">
           <Image src="/images/banners/banner-giao-nhanh.webp" alt="" fill sizes="(min-width: 1280px) 1216px, 100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-white/30" />
-          <div className="relative mx-auto flex max-w-xl flex-col items-center px-6 py-14 text-center sm:py-20">
+          <div className="absolute inset-0 bg-white/15 sm:bg-white/30" />
+          <div className="relative mx-4 my-10 flex max-w-xl flex-col items-center rounded-3xl bg-white/85 px-5 py-8 text-center shadow-xl backdrop-blur-sm sm:mx-auto sm:my-0 sm:bg-transparent sm:px-6 sm:py-20 sm:shadow-none sm:backdrop-blur-none">
             <span className="badge bg-brand-600 text-white">Đặt trước 18:00</span>
             <p className="mt-4 font-display text-3xl font-bold leading-tight text-stone-900 sm:text-4xl">Nhận hàng chỉ trong <span className="text-brand-700">2 giờ</span></p>
-            <p className="mt-3 rounded-2xl bg-white/80 px-4 py-2 text-stone-700 backdrop-blur">Nhân viên chọn kỹ từng món, đóng gói giữ lạnh và giao tận tay khắp TP. Hồ Chí Minh.</p>
+            <p className="mt-3 text-stone-700 sm:rounded-2xl sm:bg-white/80 sm:px-4 sm:py-2 sm:backdrop-blur">Nhân viên chọn kỹ từng món, đóng gói giữ lạnh và giao tận tay khắp TP. Hồ Chí Minh.</p>
             <Link href="/danh-muc" className="btn-primary mt-6 px-7 py-3 text-base">Đi chợ ngay <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>

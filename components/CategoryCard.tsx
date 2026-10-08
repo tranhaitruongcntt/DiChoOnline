@@ -13,8 +13,8 @@ export default function CategoryCard({ c, sizes = "(min-width: 1024px) 16vw, (mi
         <span className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${categoryTheme(c.slug).bg}`}><ProductIcon name={c.icon} className={`h-12 w-12 ${categoryTheme(c.slug).fg}`} /></span>
       )}
       <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-      <span className="absolute inset-x-0 bottom-0 p-3 text-white">
-        <span className="flex items-center gap-1.5 text-base font-bold"><ProductIcon name={c.icon} className="h-4 w-4" />{c.name}</span>
+      <span className="absolute inset-x-0 bottom-0 p-2.5 text-white sm:p-3">
+        <span className="flex items-center gap-1.5 text-sm font-bold leading-tight sm:text-base"><ProductIcon name={c.icon} className="h-4 w-4 shrink-0" /><span className="truncate">{c.name}</span></span>
         <span className="text-xs text-white/80">{c.product_count} sản phẩm</span>
       </span>
     </Link>

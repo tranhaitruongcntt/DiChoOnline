@@ -42,9 +42,10 @@ export default function MegaMenu({ categories, maxDiscount }: { categories: Menu
             <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${open ? "rotate-180" : ""}`} aria-hidden />
           </button>
 
-          <div id="mega-menu" hidden={!open}
-            className="absolute inset-x-4 top-full z-50 animate-toast-in overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl shadow-stone-900/10 sm:inset-x-6 lg:inset-x-8">
-            <div className="grid grid-cols-[240px_1fr_260px]">
+          {/* pt-3 làm "cầu nối" để rê chuột từ nút xuống bảng không bị đóng */}
+          <div id="mega-menu" hidden={!open} className="absolute inset-x-4 top-full z-50 pt-3 sm:inset-x-6 lg:inset-x-8">
+            <span aria-hidden className="absolute left-14 top-[7px] z-10 h-3 w-3 rotate-45 rounded-tl-sm border-l border-t border-stone-200 bg-stone-50" />
+            <div className="grid animate-toast-in grid-cols-[240px_1fr_260px] overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl shadow-stone-900/15 ring-1 ring-black/[0.02]">
               <ul className="border-r border-stone-100 bg-stone-50/70 p-2">
                 {categories.map((c, i) => (
                   <li key={c.id}>
