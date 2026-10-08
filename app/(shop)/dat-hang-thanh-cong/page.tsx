@@ -1,4 +1,5 @@
 import { CircleCheck } from "lucide-react";
+import CheckoutSteps from "@/components/CheckoutSteps";
 import type { Metadata } from "next";
 import Link from "next/link";
 import ClearCart from "./ClearCart";
@@ -11,8 +12,9 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
   return (
     <div className="container-x py-14">
       <ClearCart />
-      <div className="card mx-auto max-w-lg p-8 text-center">
-        <p className="mx-auto grid h-20 w-20 place-items-center rounded-full bg-brand-100 text-brand-600" aria-hidden><CircleCheck className="h-10 w-10" /></p>
+      <div className="mx-auto mb-6 max-w-lg"><CheckoutSteps current={3} /></div>
+      <div className="card mx-auto max-w-lg animate-fade-up p-8 text-center">
+        <p className="mx-auto grid h-20 w-20 animate-pop place-items-center rounded-full bg-brand-100 text-brand-600 ring-8 ring-brand-50" aria-hidden><CircleCheck className="h-10 w-10" /></p>
         <h1 className="mt-5 text-2xl font-extrabold text-stone-900">Đặt hàng thành công!</h1>
         <p className="mt-2 text-stone-600">Cảm ơn bạn. Nhân viên sẽ gọi xác nhận đơn trong ít phút.</p>
         {code && (

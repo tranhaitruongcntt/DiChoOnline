@@ -19,7 +19,7 @@ export default function CartToast() {
   }, [lastAdded]);
 
   return (
-    <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 sm:bottom-6 sm:justify-end sm:px-6">
+    <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(72px+env(safe-area-inset-bottom))] z-50 flex justify-center px-4 md:bottom-6 md:justify-end md:px-6">
       {visible && lastAdded && (
         <div key={lastAdded.at} className="pointer-events-auto flex w-full max-w-sm animate-toast-in items-center gap-3 rounded-2xl bg-stone-900/95 p-3 pr-2 text-white shadow-2xl ring-1 ring-white/10 backdrop-blur">
           {lastAdded.image?.startsWith("/") ? (

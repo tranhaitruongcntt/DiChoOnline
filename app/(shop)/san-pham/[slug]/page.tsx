@@ -5,6 +5,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import ProductVisual from "@/components/ProductVisual";
 import AddToCartButton from "@/components/AddToCartButton";
+import StickyBuyBar from "@/components/StickyBuyBar";
 import { ProductGrid, toCartProduct } from "@/components/ProductCard";
 import { getProduct, getRelatedProducts } from "@/lib/catalog";
 import { creditFor } from "@/lib/credits";
@@ -67,7 +68,8 @@ export default async function ProductPage({ params }: Props) {
             {p.stock > 0 ? `Còn hàng${p.stock <= 10 ? ` – chỉ còn ${p.stock}` : ""}` : "Tạm hết hàng"}
           </p>
 
-          <div className="mt-6 max-w-md"><AddToCartButton product={toCartProduct(p)} withQty /></div>
+          <div id="buy-box" className="mt-6 max-w-md"><AddToCartButton product={toCartProduct(p)} withQty /></div>
+          <StickyBuyBar product={toCartProduct(p)} targetId="buy-box" />
 
           <ul className="mt-8 grid gap-3 text-sm sm:grid-cols-2">
             {([[Truck, "Giao nhanh trong 2 giờ"], [ShieldCheck, "Nguồn gốc rõ ràng"], [Snowflake, "Đóng gói giữ lạnh"], [RefreshCw, "Đổi trả trong 24h"]] as const).map(([Icon, t]) => (

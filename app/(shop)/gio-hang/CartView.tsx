@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, ShoppingBasket, Trash2 } from "lucide-react";
+import { ArrowLeft, Minus, Plus, ShoppingBasket, Trash2 } from "lucide-react";
 
 import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
@@ -23,9 +23,10 @@ export default function CartView() {
 
   return (
     <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
-      <ul className="card divide-y divide-stone-100">
+      <div>
+      <ul className="card divide-y divide-stone-100 overflow-hidden">
         {items.map((i) => (
-          <li key={i.id} className="flex items-center gap-4 p-4">
+          <li key={i.id} className="flex animate-fade-in items-center gap-4 p-4 transition-colors hover:bg-stone-50/60">
             <Link href={`/san-pham/${i.slug}`} className="w-20 shrink-0"><ProductVisual icon={i.icon} image={i.image} name={i.name} category={i.category} size="sm" /></Link>
             <div className="min-w-0 flex-1">
               <Link href={`/san-pham/${i.slug}`} className="font-semibold text-stone-800 hover:text-brand-700">{i.name}</Link>
@@ -39,10 +40,12 @@ export default function CartView() {
                 <button type="button" onClick={() => remove(i.id)} className="flex items-center gap-1 text-sm text-rose-600 hover:underline"><Trash2 className="h-3.5 w-3.5" aria-hidden />Xoá</button>
               </div>
             </div>
-            <p className="font-bold text-stone-800">{formatPrice(i.price * i.qty)}</p>
+            <p className="font-display font-bold tabular-nums text-stone-800">{formatPrice(i.price * i.qty)}</p>
           </li>
         ))}
       </ul>
+      <Link href="/danh-muc" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 hover:underline"><ArrowLeft className="h-4 w-4" aria-hidden />Tiếp tục mua sắm</Link>
+      </div>
       <aside>
         <OrderSummary subtotal={subtotal}>
           <Link href="/thanh-toan" className="btn-primary mt-4 w-full py-3 text-base">Tiến hành đặt hàng</Link>

@@ -1,9 +1,8 @@
 import { CreditCard, Flame, RefreshCw, ShieldCheck, Sprout, Truck, type LucideIcon } from "lucide-react";
-import { ProductIcon } from "@/components/icons";
-import { categoryTheme } from "@/components/ProductVisual";
 import Link from "next/link";
 import Image from "next/image";
 import { ProductGrid } from "@/components/ProductCard";
+import CategoryCard from "@/components/CategoryCard";
 import { getCategories, getDeals, getFeaturedProducts } from "@/lib/catalog";
 
 const HERO = [
@@ -62,16 +61,16 @@ export default function HomePage() {
       </section>
 
       <section aria-label="Cam kết" className="container-x -mt-8 relative z-10">
-        <ul className="card grid animate-fade-up grid-cols-2 gap-4 p-5 text-sm [animation-delay:450ms] md:grid-cols-4">
+        <ul className="card grid animate-fade-up grid-cols-2 gap-x-3 gap-y-5 p-4 text-sm [animation-delay:450ms] sm:gap-4 sm:p-5 md:grid-cols-4">
           {([
             [Truck, "Giao nhanh 2 giờ", "Miễn phí từ 300K"],
             [ShieldCheck, "Nguồn gốc rõ ràng", "Chuẩn VietGAP"],
             [RefreshCw, "Đổi trả 24h", "Nếu không tươi"],
             [CreditCard, "Thanh toán linh hoạt", "COD hoặc chuyển khoản"],
           ] as [LucideIcon, string, string][]).map(([Icon, t, d]) => (
-            <li key={t} className="flex items-center gap-3">
+            <li key={t} className="flex flex-col items-center gap-2 text-center sm:flex-row sm:gap-3 sm:text-left">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700"><Icon className="h-5 w-5" aria-hidden /></span>
-              <span><strong className="block text-stone-800">{t}</strong><span className="text-stone-500">{d}</span></span>
+              <span className="leading-snug"><strong className="block text-stone-800">{t}</strong><span className="text-xs text-stone-500 sm:text-sm">{d}</span></span>
             </li>
           ))}
         </ul>
@@ -82,18 +81,7 @@ export default function HomePage() {
         <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {categories.map((c) => (
             <li key={c.id} className="reveal">
-              <Link href={`/danh-muc/${c.slug}`} className="group relative block aspect-[4/5] overflow-hidden rounded-2xl bg-stone-200 shadow-sm ring-1 ring-stone-200 transition hover:-translate-y-0.5 hover:shadow-lg">
-                {c.cover ? (
-                  <Image src={c.cover} alt="" fill sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                ) : (
-                  <span className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${categoryTheme(c.slug).bg}`}><ProductIcon name={c.icon} className={`h-12 w-12 ${categoryTheme(c.slug).fg}`} /></span>
-                )}
-                <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                <span className="absolute inset-x-0 bottom-0 p-3 text-white">
-                  <span className="flex items-center gap-1.5 text-base font-bold"><ProductIcon name={c.icon} className="h-4 w-4" />{c.name}</span>
-                  <span className="text-xs text-white/80">{c.product_count} sản phẩm</span>
-                </span>
-              </Link>
+              <CategoryCard c={c} />
             </li>
           ))}
         </ul>

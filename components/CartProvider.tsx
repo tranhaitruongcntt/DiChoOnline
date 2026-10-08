@@ -20,6 +20,12 @@ const KEY = "dicho_cart_v1";
 const MAX_LINES = 50;
 const Ctx = createContext<CartCtx | null>(null);
 
+// Lưu ngay khi thay đổi (không đợi effect) để không mất giỏ nếu người dùng chuyển trang tức thì
+function persist(next: CartItem[]) {
+  try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* bộ nhớ đầy hoặc chế độ riêng tư */ }
+  return next;
+}
+
 function load(): CartItem[] {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) || "[]");
@@ -54,9 +60,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setLastAdded({ name: item.name, image: item.image, at: Date.now() });
     setItems((prev) => {
       const found = prev.find((i) => i.id === item.id);
-      if (found) return prev.map((i) => (i.id === item.id ? { ...i, ...item, qty: Math.min(i.qty + qty, item.maxQty, 99) } : i));
+      if (found) return persist(prev.map((i) => (i.id === item.id ? { ...i, ...item, qty: Math.min(i.qty + qty, item.maxQty, 99) } : i)));
       if (prev.length >= MAX_LINES) return prev;
-      return [...prev, { ...item, qty: Math.min(qty, item.maxQty, 99) }];
+      return persist([...prev, { ...item, qty: Math.min(qty, item.maxQty, 99) }]);
     });
   }, []);
   const setQty = useCallback((id: number, qty: number) => {

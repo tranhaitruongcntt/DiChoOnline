@@ -3,16 +3,20 @@ import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { CartProvider } from "@/components/CartProvider";
 import CartToast from "@/components/CartToast";
+import MobileNav from "@/components/MobileNav";
 import { absoluteUrl, site } from "@/lib/site";
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
     <CartProvider>
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow">Bỏ qua tới nội dung chính</a>
-      <Header />
-      <main id="main">{children}</main>
-      <Footer />
+      <div className="flex min-h-dvh flex-col pb-[calc(57px+env(safe-area-inset-bottom))] md:pb-0">
+        <Header />
+        <main id="main" className="flex-1">{children}</main>
+        <Footer />
+      </div>
       <CartToast />
+      <MobileNav />
       <JsonLd
         data={[
           {

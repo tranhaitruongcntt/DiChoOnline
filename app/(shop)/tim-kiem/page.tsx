@@ -1,4 +1,7 @@
 import { SearchX } from "lucide-react";
+import Link from "next/link";
+
+const POPULAR = ["Rau", "Trái cây", "Tôm", "Cá hồi", "Thịt bò", "Trứng", "Gạo"];
 import type { Metadata } from "next";
 import { ProductGrid } from "@/components/ProductCard";
 import SortLinks from "@/components/SortLinks";
@@ -29,9 +32,19 @@ export default async function SearchPage({ searchParams }: Props) {
         {results.length ? (
           <ProductGrid products={results} />
         ) : (
-          <div className="card p-12 text-center">
+          <div className="card animate-fade-up p-8 text-center sm:p-12">
             <SearchX className="mx-auto h-12 w-12 text-stone-300" strokeWidth={1.5} aria-hidden />
-            <p className="mt-3 text-stone-600">{q ? "Không tìm thấy sản phẩm phù hợp. Hãy thử từ khoá khác, ví dụ “rau”, “tôm”, “xoài”." : "Nhập từ khoá vào ô tìm kiếm phía trên."}</p>
+            <p className="mt-3 text-stone-600">{q ? "Không tìm thấy sản phẩm phù hợp. Thử một từ khoá khác nhé." : "Bạn muốn mua gì hôm nay?"}</p>
+            <form action="/tim-kiem" method="get" role="search" className="mx-auto mt-5 flex max-w-md gap-2">
+              <label htmlFor="q2" className="sr-only">Từ khoá</label>
+              <input id="q2" name="q" type="search" defaultValue={q} maxLength={80} autoFocus={!q} placeholder="VD: rau muống, tôm, xoài…" className="input rounded-full" />
+              <button className="btn-primary rounded-full px-5">Tìm</button>
+            </form>
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              {POPULAR.map((k) => (
+                <Link key={k} href={`/tim-kiem?q=${encodeURIComponent(k)}`} className="rounded-full bg-stone-100 px-3 py-1.5 text-sm text-stone-600 transition-colors hover:bg-brand-50 hover:text-brand-700">{k}</Link>
+              ))}
+            </div>
           </div>
         )}
       </div>

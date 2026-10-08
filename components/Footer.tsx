@@ -7,8 +7,8 @@ export default function Footer() {
   const categories = getCategories();
   return (
     <footer className="mt-16 border-t border-stone-200 bg-white">
-      <div className="container-x grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
+      <div className="container-x grid grid-cols-2 gap-x-6 gap-y-8 py-12 lg:grid-cols-4">
+        <div className="col-span-2 lg:col-span-1">
           <p className="font-display flex items-center gap-2 text-lg font-bold text-brand-800"><ShoppingBasket className="h-5 w-5" aria-hidden /> {site.name}</p>
           <p className="mt-2 text-sm leading-relaxed text-stone-600">{site.description}</p>
         </div>
@@ -27,7 +27,7 @@ export default function Footer() {
             <li><Link href="/nguon-anh" className="hover:text-brand-700">Nguồn hình ảnh</Link></li>
           </ul>
         </div>
-        <address className="not-italic">
+        <address className="col-span-2 not-italic lg:col-span-1">
           <h2 className="font-semibold text-stone-800">Liên hệ</h2>
           <ul className="mt-3 space-y-2 text-sm text-stone-600">
             <li className="flex gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden />{site.address}</li>

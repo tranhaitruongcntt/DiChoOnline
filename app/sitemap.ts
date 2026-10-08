@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return [
     { url: absoluteUrl("/"), lastModified: now, changeFrequency: "daily", priority: 1 },
+    { url: absoluteUrl("/danh-muc"), lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     ...categories.map((c) => ({ url: absoluteUrl(`/danh-muc/${c.slug}`), lastModified: now, changeFrequency: "daily" as const, priority: 0.8 })),
     ...products.map((p) => ({
       url: absoluteUrl(`/san-pham/${p.slug}`),
