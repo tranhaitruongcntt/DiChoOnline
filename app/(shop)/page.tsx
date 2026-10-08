@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Clock, CreditCard, Flame, RefreshCw, ShieldCheck, Truck, type LucideIcon } from "lucide-react";
 import HeroCarousel, { type Slide } from "@/components/HeroCarousel";
 import Countdown from "@/components/Countdown";
+import RecentlyViewed from "@/components/RecentlyViewed";
 import CategoryCard from "@/components/CategoryCard";
 import { ProductGrid } from "@/components/ProductCard";
 import { getCategories, getDeals, getFeaturedProducts } from "@/lib/catalog";
@@ -111,8 +112,8 @@ export default function HomePage() {
                 <Flame className="h-7 w-7 animate-pulse" aria-hidden /> Flash Sale
               </h2>
               <Link href="/khuyen-mai" className="ml-auto flex items-center gap-1 text-sm font-semibold hover:underline sm:order-last">Xem tất cả <ArrowRight className="h-4 w-4" /></Link>
-              <div className="flex w-full items-center gap-3 text-sm sm:w-auto">
-                <span className="flex items-center gap-1.5 text-white/90"><Clock className="h-4 w-4" /> Kết thúc sau</span>
+              <div className="flex w-full flex-wrap items-center gap-x-3 gap-y-2 text-sm sm:w-auto">
+                <span className="flex items-center gap-1.5 whitespace-nowrap text-white/90"><Clock className="h-4 w-4 shrink-0" /> Kết thúc sau</span>
                 <Countdown />
               </div>
             </div>
@@ -128,6 +129,8 @@ export default function HomePage() {
         </div>
         <div className="mt-5"><ProductGrid products={featured} /></div>
       </section>
+
+      <RecentlyViewed />
 
       <section className="container-x mt-16" aria-label="Giao hàng nhanh">
         <div className="reveal relative overflow-hidden rounded-3xl">

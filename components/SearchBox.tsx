@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { Clock, Loader2, Search, TrendingUp, X } from "lucide-react";
+import { Clock, Loader2, Mic, Search, TrendingUp, X } from "lucide-react";
 import { ProductIcon } from "./icons";
 import { formatPrice } from "@/lib/format";
 
@@ -26,6 +26,8 @@ export default function SearchBox() {
   const [loading, setLoading] = useState(false);
   const [recent, setRecent] = useState<string[]>([]);
   const [hi, setHi] = useState(-1);
+  const [listening, setListening] = useState(false);
+  const [canVoice, setCanVoice] = useState(false);
   const wrap = useRef<HTMLFormElement>(null);
   const input = useRef<HTMLInputElement>(null);
 
@@ -45,6 +47,28 @@ export default function SearchBox() {
     }, 180);
     return () => { clearTimeout(t); ctrl.abort(); };
   }, [q]);
+
+  useEffect(() => { setCanVoice(typeof window !== "undefined" && !!(window.SpeechRecognition || window.webkitSpeechRecognition)); }, []);
+
+  // Tìm kiếm bằng giọng nói (tiếng Việt) – tiện cho người lớn tuổi, không cần gõ dấu
+  const voice = () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
+    const rec = new SR();
+    rec.lang = "vi-VN";
+    rec.interimResults = true;
+    rec.maxAlternatives = 1;
+    setListening(true);
+    setOpen(true);
+    rec.onresult = (e) => {
+      const text = Array.from(e.results).map((r) => r[0].transcript).join(" ").trim();
+      setQ(text);
+      if (e.results[e.results.length - 1].isFinal && text) go(text);
+    };
+    rec.onerror = () => setListening(false);
+    rec.onend = () => setListening(false);
+    rec.start();
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -84,13 +108,23 @@ export default function SearchBox() {
         value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); }}
         onFocus={() => { setRecent(readRecent()); setOpen(true); }} onKeyDown={onKey}
         placeholder="Tìm rau, thịt, cá, trái cây…"
-        className={`input rounded-full bg-stone-100 pl-10 pr-10 focus:bg-white ${open ? "md:rounded-b-none md:rounded-t-2xl" : ""}`} />
+        className={`input rounded-full bg-stone-100 pl-10 pr-20 focus:bg-white ${open ? "md:rounded-b-none md:rounded-t-2xl" : ""}`} />
       <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" aria-hidden />
-      {loading ? <Loader2 className="absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-brand-600" aria-hidden />
-        : q && <button type="button" onClick={() => { setQ(""); input.current?.focus(); }} aria-label="Xoá nội dung tìm kiếm" className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full text-stone-400 hover:bg-stone-200 hover:text-stone-600"><X className="h-4 w-4" /></button>}
+      <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5">
+        {loading ? <Loader2 className="mx-1.5 h-4 w-4 animate-spin text-brand-600" aria-hidden />
+          : q && <button type="button" onClick={() => { setQ(""); input.current?.focus(); }} aria-label="Xoá nội dung tìm kiếm" className="grid h-8 w-8 place-items-center rounded-full text-stone-400 hover:bg-stone-200 hover:text-stone-600"><X className="h-4 w-4" /></button>}
+        {canVoice && (
+          <button type="button" onClick={voice} aria-label={listening ? "Đang nghe…" : "Tìm bằng giọng nói"} title="Tìm bằng giọng nói"
+            className={`relative grid h-8 w-8 place-items-center rounded-full transition-colors ${listening ? "bg-rose-500 text-white" : "text-brand-700 hover:bg-brand-50"}`}>
+            {listening && <span className="absolute inset-0 animate-ping rounded-full bg-rose-400/60" />}
+            <Mic className="relative h-4 w-4" />
+          </button>
+        )}
+      </div>
 
       {open && (
         <div id={listId} className="absolute inset-x-0 top-full z-50 mt-1 animate-toast-in overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl shadow-stone-900/10 md:mt-0 md:rounded-t-none md:border-t-0">
+          {listening && <p className="flex items-center gap-2 border-b border-stone-100 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700"><Mic className="h-4 w-4" /> Đang nghe… hãy nói tên sản phẩm, ví dụ “cá hồi”</p>}
           {!term ? (
             <div className="space-y-4 p-4">
               {recent.length > 0 && (
@@ -157,4 +191,14 @@ function Highlight({ text, term }: { text: string; term: string }) {
       {text.slice(0, i)}<mark className="rounded bg-accent-400/30 px-0.5 text-stone-900">{text.slice(i, i + term.length)}</mark>{text.slice(i + term.length)}
     </span>
   );
+}
+
+// Kiểu tối thiểu cho Web Speech API (chưa có trong lib DOM của TypeScript)
+type VoiceResultEvent = { results: ArrayLike<{ isFinal: boolean; 0: { transcript: string } }> };
+type VoiceRecognizer = {
+  lang: string; interimResults: boolean; maxAlternatives: number; start(): void;
+  onresult: ((e: VoiceResultEvent) => void) | null; onerror: (() => void) | null; onend: (() => void) | null;
+};
+declare global {
+  interface Window { SpeechRecognition?: new () => VoiceRecognizer; webkitSpeechRecognition?: new () => VoiceRecognizer }
 }

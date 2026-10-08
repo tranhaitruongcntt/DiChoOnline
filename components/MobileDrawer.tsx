@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronRight, Clock, Menu, Phone, ShoppingBasket, X } from "lucide-react";
 import { ProductIcon } from "./icons";
+import FontSizeControl from "./FontSizeControl";
 import { NAV_LINKS, isActive } from "./nav-links";
 import type { MenuCategory } from "@/lib/catalog";
 
@@ -71,7 +72,8 @@ export default function MobileDrawer({ categories, phone }: { categories: MenuCa
                 ))}
               </ul>
             </div>
-            <div className="space-y-2 border-t border-stone-100 bg-stone-50 p-4 text-sm">
+            <div className="space-y-3 border-t border-stone-100 bg-stone-50 p-4 text-sm">
+              <div className="flex items-center justify-center rounded-xl bg-white p-2 ring-1 ring-stone-200"><FontSizeControl tone="light" /></div>
               <a href={`tel:${phone.replace(/\s/g, "")}`} className="btn-primary w-full"><Phone className="h-4 w-4" /> Gọi {phone}</a>
               <p className="flex items-center justify-center gap-1.5 text-stone-500"><Clock className="h-4 w-4" /> Mở cửa 6:00 – 21:00 hằng ngày</p>
             </div>

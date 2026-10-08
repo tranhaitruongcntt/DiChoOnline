@@ -16,6 +16,18 @@ export type Order = {
   shipping_fee: number; total: number; status: OrderStatus; admin_note: string; created_at: string; updated_at: string;
 };
 export type OrderItem = { id: number; product_id: number; name: string; unit: string; price: number; quantity: number; line_total: number };
+export type ReorderItem = { product_id: number; quantity: number; slug: string; name: string; unit: string; price: number; stock: number; icon: string; image: string | null; category_slug: string };
+
+/** Thông tin hiện tại của các sản phẩm trong đơn cũ (bỏ qua sản phẩm đã ngừng bán) – dùng cho "Mua lại". */
+export function getReorderItems(orderId: number): ReorderItem[] {
+  return (getDb()
+    .prepare(
+      `SELECT oi.product_id, oi.quantity, p.slug, p.name, p.unit, p.price, p.stock, p.icon, p.image, c.slug AS category_slug
+       FROM order_items oi JOIN products p ON p.id = oi.product_id JOIN categories c ON c.id = p.category_id
+       WHERE oi.order_id = ? AND p.is_active = 1 ORDER BY oi.id`,
+    )
+    .all(orderId) as ReorderItem[]).map((r) => ({ ...r }));
+}
 export type OrderEvent = { id: number; status: string; note: string; actor: string; created_at: string };
 
 export class OrderError extends Error {}
@@ -72,7 +84,7 @@ export function lookupOrder(code: string, phone: string) {
   const db = getDb();
   const order = db.prepare("SELECT * FROM orders WHERE code = ? AND phone = ?").get(code, phone) as Order | undefined;
   if (!order) return null;
-  return { order, items: getItems(order.id), events: getEvents(order.id) };
+  return { order, items: getItems(order.id), events: getEvents(order.id), reorder: getReorderItems(order.id) };
 }
 
 const getItems = (orderId: number) =>

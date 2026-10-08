@@ -37,9 +37,13 @@ export const viewport: Viewport = { themeColor: "#1a7e4f", width: "device-width"
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Đọc headers để trang luôn render động → Next.js gắn nonce CSP cho mọi script.
-  await headers();
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
-    <html lang="vi" className={`${font.variable} ${display.variable}`}>
+    <html lang="vi" className={`${font.variable} ${display.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Áp dụng cỡ chữ người dùng đã chọn trước khi hiển thị để tránh nháy giao diện */}
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: `try{var f=localStorage.getItem("dicho_font");if(f==="112.5%"||f==="125%")document.documentElement.style.fontSize=f}catch(e){}` }} />
+      </head>
       <body className="min-h-dvh font-sans">{children}</body>
     </html>
   );

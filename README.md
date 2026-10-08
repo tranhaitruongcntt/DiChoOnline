@@ -10,6 +10,12 @@ Website đi chợ online (thực phẩm tươi sạch) xây bằng **React / Nex
 - Miễn phí giao hàng theo ngưỡng, tra cứu đơn bằng **mã đơn + số điện thoại**
 - Giao diện responsive, thân thiện mobile, hỗ trợ trợ năng (a11y)
 
+**Tiện ích cho mọi lứa tuổi**
+- Chỉnh cỡ chữ A / A+ / A++ (ghi nhớ trên trình duyệt), tìm kiếm bằng giọng nói tiếng Việt
+- Ô tìm kiếm gợi ý tức thì, lịch sử tìm kiếm; giỏ hàng xem nhanh; tăng/giảm số lượng ngay trên thẻ sản phẩm
+- Ghi nhớ thông tin giao hàng (chỉ lưu trên máy khách), mua lại đơn cũ, sản phẩm đã xem gần đây
+- Hotline đặt hộ hiển thị rõ cho người không quen mua online; menu trượt và thanh điều hướng đáy trên điện thoại
+
 **Quản trị (`/admin`)**
 - Dashboard: đơn hôm nay, doanh thu, biểu đồ 7 ngày, cảnh báo sắp hết hàng
 - Quản lý đơn: lọc theo trạng thái, tìm kiếm, phân trang, đổi trạng thái theo quy trình

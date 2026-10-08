@@ -37,7 +37,7 @@ export default function HeroCarousel({ slides }: { slides: Slide[] }) {
 
   return (
     <section aria-roledescription="carousel" aria-label="Chương trình nổi bật"
-      className="relative h-[460px] overflow-hidden bg-brand-900 text-white sm:h-[500px] lg:h-[540px]"
+      className="relative h-[32rem] overflow-hidden bg-brand-900 text-white sm:h-[31rem] lg:h-[34rem]"
       onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}
       onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
@@ -58,14 +58,14 @@ export default function HeroCarousel({ slides }: { slides: Slide[] }) {
             <div className="absolute inset-0 bg-gradient-to-r from-brand-900/95 via-brand-900/70 to-brand-900/5" />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-900/60 via-transparent to-transparent sm:hidden" />
             {on && (
-              <div className="container-x relative flex h-full flex-col justify-center pb-10">
+              <div className="container-x relative flex h-full flex-col justify-center pb-20 sm:pb-10">
                 <div className="max-w-xl">
                   <span className="badge animate-fade-up bg-white/15 text-white ring-1 ring-white/30">{s.eyebrow}</span>
-                  <Heading className="mt-4 animate-fade-up font-display text-4xl font-bold leading-[1.12] tracking-tight [animation-delay:90ms] sm:text-5xl xl:text-[3.5rem]">
+                  <Heading className="mt-3 animate-fade-up font-display text-[2rem] font-bold sm:mt-4 leading-[1.12] tracking-tight [animation-delay:90ms] sm:text-5xl xl:text-[3.5rem]">
                     {s.title[0]}<br /><span className="text-accent-400">{s.title[1]}</span>{s.title[2] ?? ""}
                   </Heading>
-                  <p className="mt-4 max-w-lg animate-fade-up text-base text-white/85 [animation-delay:180ms] sm:text-lg">{s.desc}</p>
-                  <div className="mt-7 flex animate-fade-up flex-wrap gap-3 [animation-delay:270ms]">
+                  <p className="mt-3 max-w-lg animate-fade-up text-[0.95rem] text-white/85 sm:mt-4 [animation-delay:180ms] sm:text-lg">{s.desc}</p>
+                  <div className="mt-6 flex animate-fade-up flex-wrap gap-3 sm:mt-7 [animation-delay:270ms]">
                     <Link href={s.cta.href} tabIndex={on ? 0 : -1} className="btn bg-white px-6 py-3 text-base text-brand-800 shadow-lg hover:bg-brand-50">{s.cta.label}</Link>
                     {s.cta2 && <Link href={s.cta2.href} tabIndex={on ? 0 : -1} className="btn px-6 py-3 text-base text-white ring-1 ring-white/50 hover:bg-white/10">{s.cta2.label}</Link>}
                   </div>

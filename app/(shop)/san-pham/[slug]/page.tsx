@@ -6,6 +6,8 @@ import JsonLd from "@/components/JsonLd";
 import ProductVisual from "@/components/ProductVisual";
 import AddToCartButton from "@/components/AddToCartButton";
 import StickyBuyBar from "@/components/StickyBuyBar";
+import CallHelp from "@/components/CallHelp";
+import RecentTracker from "@/components/RecentTracker";
 import { ProductGrid, toCartProduct } from "@/components/ProductCard";
 import { getProduct, getRelatedProducts } from "@/lib/catalog";
 import { creditFor } from "@/lib/credits";
@@ -40,7 +42,7 @@ export default async function ProductPage({ params }: Props) {
       <Breadcrumbs items={[{ name: p.category_name, href: `/danh-muc/${p.category_slug}` }, { name: p.name, href: `/san-pham/${p.slug}` }]} />
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
-        <div className="card group animate-fade-up overflow-hidden p-4">
+        <div className="card group min-w-0 animate-fade-up overflow-hidden p-4">
           <ProductVisual icon={p.icon} image={p.image} name={p.name} category={p.category_slug} size="lg" priority />
           {credit && (
             <p className="mt-2 text-xs text-stone-400">
@@ -48,12 +50,12 @@ export default async function ProductPage({ params }: Props) {
             </p>
           )}
         </div>
-        <div className="animate-fade-up [animation-delay:120ms]">
+        <div className="min-w-0 animate-fade-up [animation-delay:120ms]">
           <p className="text-sm font-semibold text-brand-700">Xuất xứ: {p.origin}</p>
           <h1 className="mt-1 text-3xl font-bold leading-tight text-stone-900 sm:text-4xl">{p.name}</h1>
           <p className="mt-3 text-lg text-stone-600">{p.short_desc}</p>
 
-          <div className="mt-6 flex items-end gap-3">
+          <div className="mt-6 flex flex-wrap items-end gap-x-3 gap-y-1">
             <span className="font-display text-4xl font-bold text-brand-700">{formatPrice(p.price)}</span>
             <span className="pb-1 text-stone-500">/ {p.unit}</span>
             {discount > 0 && (
@@ -70,6 +72,8 @@ export default async function ProductPage({ params }: Props) {
 
           <div id="buy-box" className="mt-6 max-w-md"><AddToCartButton product={toCartProduct(p)} withQty /></div>
           <StickyBuyBar product={toCartProduct(p)} targetId="buy-box" />
+          <CallHelp className="mt-4 max-w-md" />
+          <RecentTracker product={{ ...toCartProduct(p), compare: p.compare_price }} />
 
           <ul className="mt-8 grid gap-3 text-sm sm:grid-cols-2">
             {([[Truck, "Giao nhanh trong 2 giờ"], [ShieldCheck, "Nguồn gốc rõ ràng"], [Snowflake, "Đóng gói giữ lạnh"], [RefreshCw, "Đổi trả trong 24h"]] as const).map(([Icon, t]) => (

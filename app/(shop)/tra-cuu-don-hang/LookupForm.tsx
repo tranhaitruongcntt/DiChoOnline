@@ -1,6 +1,9 @@
 "use client";
 
 import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { RotateCcw } from "lucide-react";
+import { useCart } from "@/components/CartProvider";
 import { lookupAction } from "./actions";
 import { ORDER_STATUSES, PAYMENT_METHODS, formatDateTime, formatPrice, type OrderStatus } from "@/lib/format";
 
@@ -9,6 +12,13 @@ const STEPS: OrderStatus[] = ["pending", "confirmed", "shipping", "completed"];
 export default function LookupForm() {
   const [state, action, pending] = useActionState(lookupAction, {});
   const r = state.result;
+  const { add } = useCart();
+  const router = useRouter();
+  const reorder = () => {
+    if (!r) return;
+    for (const { qty, ...p } of r.reorder) add(p, qty);
+    router.push("/gio-hang");
+  };
   return (
     <>
       <form action={action} className="card mt-6 grid gap-4 p-5 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
@@ -54,6 +64,11 @@ export default function LookupForm() {
             <div className="flex justify-between text-stone-500"><dt>Thanh toán</dt><dd>{PAYMENT_METHODS[r.payment_method]}</dd></div>
             <div className="flex justify-between text-stone-500"><dt>Giao</dt><dd>{r.delivery_slot}</dd></div>
           </dl>
+          {r.reorder.length > 0 && (
+            <button type="button" onClick={reorder} className="btn-primary mt-5 w-full py-3 text-base">
+              <RotateCcw className="h-4 w-4" /> Mua lại đơn này ({r.reorder.length} sản phẩm)
+            </button>
+          )}
         </section>
       )}
     </>

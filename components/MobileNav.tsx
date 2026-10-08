@@ -25,7 +25,7 @@ export default function MobileNav() {
           return (
             <li key={href}>
               <Link href={href} aria-current={active ? "page" : undefined}
-                className={`relative flex flex-col items-center gap-0.5 py-2 text-[11px] font-medium transition-colors ${active ? "text-brand-700" : "text-stone-500"}`}>
+                className={`relative flex flex-col items-center gap-0.5 py-[8px] text-[12px] font-medium leading-[16px] whitespace-nowrap transition-colors ${active ? "text-brand-700" : "text-stone-500"}`}>
                 {active && <span className="absolute inset-x-5 top-0 h-0.5 animate-fade-in rounded-full bg-brand-600" />}
                 <span className="relative">
                   <Icon className={`h-[22px] w-[22px] transition-transform duration-200 ${active ? "scale-110" : ""}`} strokeWidth={active ? 2.2 : 1.8} aria-hidden />

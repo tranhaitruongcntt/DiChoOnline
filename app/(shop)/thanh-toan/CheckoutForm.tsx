@@ -3,18 +3,34 @@
 import { MapPin, User, Wallet } from "lucide-react";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import CallHelp from "@/components/CallHelp";
 import { useCart } from "@/components/CartProvider";
 import OrderSummary from "@/components/OrderSummary";
 import { DELIVERY_SLOTS, DISTRICTS, PAYMENT_METHODS, formatPrice } from "@/lib/format";
 import { placeOrder, type CheckoutState } from "./actions";
 
+const SAVE_KEY = "dicho_customer";
+const SAVE_FIELDS = ["customer_name", "phone", "email", "address", "district"] as const;
+
 export default function CheckoutForm() {
   const { items, ready, subtotal } = useCart();
   const [state, action, pending] = useActionState<CheckoutState, FormData>(placeOrder, {});
   const fe = state.fieldErrors ?? {};
+  // Ghi nhớ thông tin giao hàng trên chính thiết bị của khách (không gửi đi đâu khác)
+  const [saved, setSaved] = useState<Record<string, string> | null>(null);
+  useEffect(() => {
+    try { setSaved(JSON.parse(localStorage.getItem(SAVE_KEY) || "{}")); } catch { setSaved({}); }
+  }, []);
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const fd = new FormData(e.currentTarget);
+    try {
+      if (fd.get("remember")) localStorage.setItem(SAVE_KEY, JSON.stringify(Object.fromEntries(SAVE_FIELDS.map((k) => [k, String(fd.get(k) ?? "")]))));
+      else localStorage.removeItem(SAVE_KEY);
+    } catch { /* bỏ qua */ }
+  };
 
-  if (!ready) return <div className="skeleton mt-6 h-64 w-full rounded-2xl" />;
+  if (!ready || saved === null) return <div className="skeleton mt-6 h-64 w-full rounded-2xl" />;
   if (!items.length)
     return (
       <div className="card mt-6 p-12 text-center">
@@ -27,7 +43,7 @@ export default function CheckoutForm() {
   const aria = (k: string) => ({ "aria-invalid": !!fe[k] || undefined, "aria-describedby": fe[k] ? `${k}-err` : undefined });
 
   return (
-    <form action={action} className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]" noValidate={false}>
+    <form action={action} onSubmit={onSubmit} className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
       <div className="space-y-6">
         {state.error && <div role="alert" className="rounded-xl bg-rose-50 p-4 text-sm text-rose-700 ring-1 ring-rose-200">{state.error}</div>}
 
@@ -36,17 +52,17 @@ export default function CheckoutForm() {
           <h2 className="flex items-center gap-2 text-lg font-bold sm:col-span-2"><User className="h-5 w-5 text-brand-600" aria-hidden /> Người nhận</h2>
           <div>
             <label htmlFor="customer_name" className="label">Họ và tên *</label>
-            <input id="customer_name" name="customer_name" required minLength={2} maxLength={80} autoComplete="name" className="input" {...aria("customer_name")} />
+            <input id="customer_name" name="customer_name" defaultValue={saved.customer_name ?? ""} required minLength={2} maxLength={80} autoComplete="name" className="input" {...aria("customer_name")} />
             <Err k="customer_name" />
           </div>
           <div>
             <label htmlFor="phone" className="label">Số điện thoại *</label>
-            <input id="phone" name="phone" type="tel" required inputMode="tel" maxLength={15} autoComplete="tel" placeholder="09xx xxx xxx" className="input" {...aria("phone")} />
+            <input id="phone" name="phone" defaultValue={saved.phone ?? ""} type="tel" required inputMode="tel" maxLength={15} autoComplete="tel" placeholder="09xx xxx xxx" className="input" {...aria("phone")} />
             <Err k="phone" />
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="email" className="label">Email (không bắt buộc)</label>
-            <input id="email" name="email" type="email" maxLength={120} autoComplete="email" className="input" {...aria("email")} />
+            <input id="email" name="email" defaultValue={saved.email ?? ""} type="email" maxLength={120} autoComplete="email" className="input" {...aria("email")} />
             <Err k="email" />
           </div>
         </fieldset>
@@ -56,12 +72,12 @@ export default function CheckoutForm() {
           <h2 className="flex items-center gap-2 text-lg font-bold sm:col-span-2"><MapPin className="h-5 w-5 text-brand-600" aria-hidden /> Giao hàng</h2>
           <div className="sm:col-span-2">
             <label htmlFor="address" className="label">Địa chỉ (số nhà, đường, phường) *</label>
-            <input id="address" name="address" required minLength={5} maxLength={200} autoComplete="street-address" className="input" {...aria("address")} />
+            <input id="address" name="address" defaultValue={saved.address ?? ""} required minLength={5} maxLength={200} autoComplete="street-address" className="input" {...aria("address")} />
             <Err k="address" />
           </div>
           <div>
             <label htmlFor="district" className="label">Quận/Huyện (TP.HCM) *</label>
-            <select id="district" name="district" required defaultValue="" className="input" {...aria("district")}>
+            <select id="district" name="district" required defaultValue={saved.district ?? ""} className="input" {...aria("district")}>
               <option value="" disabled>-- Chọn --</option>
               {DISTRICTS.map((d) => <option key={d}>{d}</option>)}
             </select>
@@ -77,6 +93,10 @@ export default function CheckoutForm() {
             <label htmlFor="note" className="label">Ghi chú</label>
             <textarea id="note" name="note" rows={3} maxLength={500} placeholder="VD: gọi trước khi giao, chọn cá con to…" className="input" />
           </div>
+          <label className="flex cursor-pointer items-center gap-3 rounded-xl bg-stone-50 p-3 text-sm sm:col-span-2">
+            <input type="checkbox" name="remember" defaultChecked className="h-5 w-5 accent-brand-600" />
+            <span>Ghi nhớ thông tin cho lần đặt sau <span className="text-stone-500">(chỉ lưu trên máy của bạn)</span></span>
+          </label>
         </fieldset>
 
         <fieldset className="card space-y-3 p-5">
@@ -107,6 +127,7 @@ export default function CheckoutForm() {
           <button type="submit" disabled={pending} className="btn-primary mt-4 w-full py-3 text-base">{pending ? "Đang đặt hàng…" : "Xác nhận đặt hàng"}</button>
           <p className="mt-3 text-center text-xs text-stone-500">Giá cuối cùng được xác nhận theo bảng giá hiện tại của cửa hàng.</p>
         </OrderSummary>
+        <CallHelp className="mt-4" />
       </aside>
     </form>
   );

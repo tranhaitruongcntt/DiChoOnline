@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Headset, ShoppingBasket, Truck } from "lucide-react";
+import { Headset, Phone, ShoppingBasket, Truck } from "lucide-react";
+import FontSizeControl from "./FontSizeControl";
 import SearchBox from "./SearchBox";
 import CartButton from "./CartButton";
 import MegaMenu from "./MegaMenu";
@@ -13,15 +14,21 @@ export default function Header() {
   const tel = `tel:${site.phone.replace(/\s/g, "")}`;
   return (
     <header className="header-elevate sticky top-0 z-40 border-b border-stone-200/80 bg-white/90 backdrop-blur-md">
-      <div className="bg-brand-700 text-center text-xs text-brand-50">
-        <p className="container-x flex items-center justify-center gap-1.5 py-1.5"><Truck className="h-3.5 w-3.5" aria-hidden /> Miễn phí giao hàng cho đơn từ 300.000đ<span className="hidden sm:inline">&nbsp;· Đặt trước 18:00 giao trong ngày</span></p>
+      <div className="bg-brand-700 text-xs text-brand-50">
+        <div className="container-x flex items-center gap-3 py-1.5">
+          <p className="flex min-w-0 items-center gap-1.5"><Truck className="h-3.5 w-3.5 shrink-0" aria-hidden /><span className="truncate">Miễn phí giao hàng từ 300.000đ<span className="hidden md:inline"> · Đặt trước 18:00 giao trong ngày</span></span></p>
+          <a href={tel} className="ml-auto flex shrink-0 items-center gap-1 font-semibold hover:underline"><Phone className="h-3.5 w-3.5" aria-hidden /><span className="hidden sm:inline">Gọi đặt hàng:</span> {site.phone}</a>
+          <span className="hidden h-3 w-px bg-white/25 sm:block" aria-hidden />
+          <div className="hidden sm:block"><FontSizeControl /></div>
+          <div className="sm:hidden"><FontSizeControl compact /></div>
+        </div>
       </div>
       <div className="container-x flex flex-wrap items-center gap-x-2 gap-y-2.5 py-2.5 sm:gap-x-5 md:flex-nowrap md:py-3">
         <MobileDrawer categories={menu} phone={site.phone} />
-        <Link href="/" className="group flex shrink-0 items-center gap-2" aria-label={`${site.name} – Trang chủ`}>
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-sm transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105"><ShoppingBasket className="h-5 w-5" aria-hidden /></span>
-          <span className="leading-tight">
-            <span className="font-display block text-lg font-bold tracking-tight text-brand-800">Đi Chợ Online</span>
+        <Link href="/" className="group flex min-w-0 flex-1 items-center gap-2 md:flex-none md:shrink-0" aria-label={`${site.name} – Trang chủ`}>
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-sm transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105"><ShoppingBasket className="h-5 w-5" aria-hidden /></span>
+          <span className="min-w-0 leading-tight">
+            <span className="font-display block truncate text-lg font-bold tracking-tight text-brand-800">Đi Chợ Online</span>
             <span className="hidden text-[11px] text-stone-500 sm:block">Tươi mỗi ngày · Giao 2 giờ</span>
           </span>
         </Link>
@@ -33,7 +40,7 @@ export default function Header() {
             <span className="font-display block font-bold text-stone-800 group-hover:text-brand-700">{site.phone}</span>
           </span>
         </a>
-        <div className="ml-auto md:ml-0"><CartButton /></div>
+        <div className="shrink-0 md:ml-0"><CartButton /></div>
       </div>
       <MegaMenu categories={menu} maxDiscount={maxDiscount} />
     </header>

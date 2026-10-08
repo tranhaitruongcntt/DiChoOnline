@@ -10,13 +10,17 @@ function doLookup(code: string, phone: string) {
   const r = lookupOrder(code, phone);
   if (!r) return null;
   // Chỉ trả về thông tin cần thiết, che bớt dữ liệu cá nhân
-  const { order, items, events } = r;
+  const { order, items, events, reorder } = r;
   return {
     code: order.code, status: order.status, created_at: order.created_at, customer_name: order.customer_name,
     address: `${order.address.slice(0, 6)}***, ${order.district}`, delivery_slot: order.delivery_slot,
     payment_method: order.payment_method, subtotal: order.subtotal, shipping_fee: order.shipping_fee, total: order.total,
     items: items.map(({ name, unit, price, quantity, line_total }) => ({ name, unit, price, quantity, line_total })),
     events: events.map(({ status, created_at }) => ({ status, created_at })),
+    reorder: reorder.map((p) => ({
+      id: p.product_id, slug: p.slug, name: p.name, price: p.price, unit: p.unit, icon: p.icon, image: p.image,
+      category: p.category_slug, maxQty: p.stock, qty: Math.min(p.quantity, p.stock),
+    })).filter((p) => p.qty > 0),
   };
 }
 
