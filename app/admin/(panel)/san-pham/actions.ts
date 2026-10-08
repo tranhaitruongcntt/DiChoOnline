@@ -8,6 +8,8 @@ import { saveProduct, slugTaken } from "@/lib/admin-products";
 import { getCategories } from "@/lib/catalog";
 import { slugify } from "@/lib/format";
 import { isProductIcon } from "@/components/icons";
+import { ImageError, UPLOAD_URL_PREFIX, deleteUploadedImage, saveProductImage } from "@/lib/images";
+import { getProductById } from "@/lib/admin-products";
 
 const money = z.coerce.number().int("Phải là số nguyên").min(0).max(100_000_000);
 
@@ -20,7 +22,11 @@ const schema = z.object({
   unit: z.string().trim().min(1, "Nhập đơn vị").max(30),
   stock: z.coerce.number().int().min(0).max(100_000),
   icon: z.string().refine(isProductIcon, "Biểu tượng không hợp lệ"),
-  image: z.union([z.literal(""), z.string().trim().url().max(500).refine((u) => u.startsWith("https://"), "Ảnh phải dùng https://")]).transform((v) => v || null),
+  image: z.union([
+    z.literal(""),
+    z.string().trim().regex(/^\/(anh|images)\/[\w./-]+$/).refine((u) => !u.includes(".."), "Đường dẫn ảnh không hợp lệ"),
+    z.string().trim().url().max(500).refine((u) => u.startsWith("https://"), "Ảnh phải dùng https://"),
+  ]).transform((v) => v || null),
   origin: z.string().trim().max(60),
   short_desc: z.string().trim().max(200),
   description: z.string().trim().max(5000),
@@ -48,7 +54,21 @@ export async function saveProductAction(_: unknown, fd: FormData): Promise<{ err
   if (!slug) return { fieldErrors: { slug: "Slug không hợp lệ" } };
   if (slugTaken(slug, id ?? undefined)) return { fieldErrors: { slug: "Slug đã được dùng" } };
 
-  const savedId = saveProduct(id, { ...d, slug });
+  // Ảnh tải lên (ưu tiên hơn URL), hoặc xoá ảnh
+  const old = id ? getProductById(id)?.image ?? null : null;
+  const file = fd.get("image_file");
+  let image = fd.get("remove_image") === "on" ? null : d.image;
+  if (file instanceof File && file.size > 0) {
+    try {
+      image = await saveProductImage(file);
+    } catch (e) {
+      if (e instanceof ImageError) return { fieldErrors: { image_file: e.message } };
+      throw e;
+    }
+  }
+
+  const savedId = saveProduct(id, { ...d, slug, image });
+  if (old && old !== image && old.startsWith(UPLOAD_URL_PREFIX)) await deleteUploadedImage(old);
   audit(admin.id, id ? "product_update" : "product_create", `#${savedId} ${d.name}`);
   revalidatePath("/", "layout");
   redirect(`/admin/san-pham?saved=${savedId}`);

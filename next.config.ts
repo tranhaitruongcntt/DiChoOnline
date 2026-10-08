@@ -16,7 +16,8 @@ const nextConfig: NextConfig = {
   compress: true,
   serverExternalPackages: [],
   experimental: {
-    serverActions: { bodySizeLimit: "200kb" },
+    // Cho phép tải ảnh sản phẩm tối đa 5MB từ trang quản trị
+    serverActions: { bodySizeLimit: "6mb" },
   },
   async headers() {
     return [

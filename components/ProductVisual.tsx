@@ -11,11 +11,17 @@ const THEMES: Record<string, { bg: string; fg: string }> = {
 export const categoryTheme = (slug: string) => THEMES[slug] ?? { bg: "from-stone-50 to-stone-100", fg: "text-brand-600" };
 
 export default function ProductVisual({
-  icon, image, name, category, size = "md",
-}: { icon: string; image?: string | null; name: string; category: string; size?: "sm" | "md" | "lg" }) {
+  icon, image, name, category, size = "md", priority = false,
+}: { icon: string; image?: string | null; name: string; category: string; size?: "sm" | "md" | "lg"; priority?: boolean }) {
   if (image) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={image} alt={name} loading="lazy" decoding="async" className="aspect-square w-full rounded-xl object-cover" />;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={image} alt={name} width={1000} height={1000} decoding="async"
+        loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : "auto"}
+        className="aspect-square w-full rounded-xl bg-stone-100 object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+      />
+    );
   }
   const t = categoryTheme(category);
   const ring = { sm: "w-3/4", md: "w-1/2", lg: "w-2/5" }[size];

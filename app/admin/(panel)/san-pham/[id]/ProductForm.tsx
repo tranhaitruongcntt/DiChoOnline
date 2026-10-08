@@ -1,6 +1,7 @@
 "use client";
 
 import { PRODUCT_ICONS, isProductIcon } from "@/components/icons";
+import ProductVisual from "@/components/ProductVisual";
 
 import { useActionState } from "react";
 import { saveProductAction } from "../actions";
@@ -31,7 +32,21 @@ export default function ProductForm({ product: p, categories }: { product: Produ
         </select>
       </F>
       <F fe={fe} name="origin" label="Xuất xứ"><input id="origin" name="origin" maxLength={60} defaultValue={p?.origin} className="input" /></F>
-      <F fe={fe} name="image" label="URL ảnh (https://…, tuỳ chọn)" span><input id="image" name="image" type="url" maxLength={500} defaultValue={p?.image ?? ""} className="input" /></F>
+      <div className="sm:col-span-2">
+        <span className="label">Ảnh sản phẩm</span>
+        <div className="flex flex-col gap-4 rounded-xl border border-dashed border-stone-300 p-4 sm:flex-row sm:items-center">
+          <div className="w-28 shrink-0">
+            <ProductVisual icon={p?.icon ?? "basket"} image={p?.image} name={p?.name ?? "Ảnh sản phẩm"} category={p?.category_slug ?? ""} size="sm" />
+          </div>
+          <div className="flex-1 space-y-2">
+            <input id="image_file" name="image_file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:font-semibold file:text-brand-700 hover:file:bg-brand-100" />
+            <p className="text-xs text-stone-500">JPG, PNG, WebP tối đa 5MB, tối thiểu 300×300px. Ảnh sẽ được cắt vuông và tối ưu tự động.</p>
+            {fe.image_file && <p className="text-xs text-rose-600">{fe.image_file}</p>}
+            {p?.image && <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="remove_image" className="accent-rose-600" /> Xoá ảnh hiện tại</label>}
+          </div>
+        </div>
+        <input type="hidden" name="image" value={p?.image ?? ""} />
+      </div>
       <F fe={fe} name="short_desc" label="Mô tả ngắn (hiển thị & SEO)" span><input id="short_desc" name="short_desc" maxLength={200} defaultValue={p?.short_desc} className="input" /></F>
       <F fe={fe} name="description" label="Mô tả chi tiết" span><textarea id="description" name="description" rows={5} maxLength={5000} defaultValue={p?.description} className="input" /></F>
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_active" defaultChecked={p ? !!p.is_active : true} className="accent-brand-600" /> Đang bán</label>

@@ -26,7 +26,7 @@ export default function CartView() {
       <ul className="card divide-y divide-stone-100">
         {items.map((i) => (
           <li key={i.id} className="flex items-center gap-4 p-4">
-            <Link href={`/san-pham/${i.slug}`} className="w-20 shrink-0"><ProductVisual icon={i.icon} name={i.name} category={i.category} size="sm" /></Link>
+            <Link href={`/san-pham/${i.slug}`} className="w-20 shrink-0"><ProductVisual icon={i.icon} image={i.image} name={i.name} category={i.category} size="sm" /></Link>
             <div className="min-w-0 flex-1">
               <Link href={`/san-pham/${i.slug}`} className="font-semibold text-stone-800 hover:text-brand-700">{i.name}</Link>
               <p className="text-sm text-stone-500">{formatPrice(i.price)} / {i.unit}</p>

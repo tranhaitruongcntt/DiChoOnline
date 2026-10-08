@@ -38,7 +38,7 @@ export default async function ProductPage({ params }: Props) {
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
         <div className="card group p-4">
-          <ProductVisual icon={p.icon} image={p.image} name={p.name} category={p.category_slug} size="lg" />
+          <ProductVisual icon={p.icon} image={p.image} name={p.name} category={p.category_slug} size="lg" priority />
         </div>
         <div>
           <p className="text-sm font-semibold text-brand-700">Xuất xứ: {p.origin}</p>
@@ -93,7 +93,7 @@ export default async function ProductPage({ params }: Props) {
           sku: `DC-${p.id}`,
           category: p.category_name,
           url,
-          ...(p.image ? { image: [p.image] } : {}),
+          ...(p.image ? { image: [p.image.startsWith("/") ? absoluteUrl(p.image) : p.image] } : {}),
           brand: { "@type": "Brand", name: site.name },
           countryOfOrigin: p.origin,
           offers: {

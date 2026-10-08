@@ -14,7 +14,7 @@ Website đi chợ online (thực phẩm tươi sạch) xây bằng **React / Nex
 - Dashboard: đơn hôm nay, doanh thu, biểu đồ 7 ngày, cảnh báo sắp hết hàng
 - Quản lý đơn: lọc theo trạng thái, tìm kiếm, phân trang, đổi trạng thái theo quy trình
   (Chờ xác nhận → Đã xác nhận → Đang giao → Hoàn thành / Huỷ – huỷ sẽ hoàn tồn kho), ghi chú nội bộ, lịch sử xử lý
-- Quản lý sản phẩm: thêm/sửa giá, giá gốc, tồn kho, ẩn/hiện, nổi bật, chọn icon hoặc URL ảnh
+- Quản lý sản phẩm: thêm/sửa giá, giá gốc, tồn kho, ẩn/hiện, nổi bật, **tải ảnh sản phẩm lên** (tự cắt vuông, nén WebP, xoá metadata)
 
 Giao diện dùng bộ icon SVG [lucide-react](https://lucide.dev) (không dùng emoji).
 
@@ -63,7 +63,7 @@ npm start
 1. Chạy sau reverse proxy có **HTTPS** (Nginx/Caddy/Cloudflare). Cookie admin chỉ hoạt động qua HTTPS.
 2. Đặt `NEXT_PUBLIC_SITE_URL` đúng tên miền (ảnh hưởng canonical, sitemap).
 3. Đặt `IP_SALT` là chuỗi ngẫu nhiên.
-4. Sao lưu định kỳ thư mục `data/`.
+4. Sao lưu định kỳ thư mục `data/` (gồm CSDL và ảnh đã tải lên trong `data/uploads/`).
 5. Khai báo `https://<tên-miền>/sitemap.xml` trong Google Search Console.
 6. Giới hạn tần suất hiện lưu trong bộ nhớ – nếu chạy nhiều instance, chuyển sang Redis (`lib/rate-limit.ts`).
 
