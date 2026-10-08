@@ -17,6 +17,7 @@ function open(): DatabaseSync {
   db.exec("PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000; PRAGMA foreign_keys = ON;");
   db.exec(fs.readFileSync(path.join(process.cwd(), "db", "schema.sql"), "utf8"));
   seed(db);
+  attachDemoImages(db);
   bootstrapAdmin(db);
   return db;
 }
@@ -36,6 +37,20 @@ function seed(db: DatabaseSync) {
       const { id } = catId.get(p.category) as { id: number };
       insProd.run(p.slug, p.name, id, p.price, p.compare ?? null, p.unit, p.stock, p.icon, p.origin, p.short, p.desc, p.featured ? 1 : 0);
     }
+  });
+}
+
+/** Gắn ảnh demo (public/images/products/<slug>.webp) cho sản phẩm mẫu chưa có ảnh – chỉ chạy một lần. */
+function attachDemoImages(db: DatabaseSync) {
+  const KEY = "demo_images_v1";
+  if (db.prepare("SELECT 1 FROM settings WHERE key = ?").get(KEY)) return;
+  const dir = path.join(process.cwd(), "public", "images", "products");
+  const upd = db.prepare("UPDATE products SET image = ? WHERE slug = ? AND image IS NULL");
+  tx(db, () => {
+    for (const p of seedProducts) {
+      if (fs.existsSync(path.join(dir, `${p.slug}.webp`))) upd.run(`/images/products/${p.slug}.webp`, p.slug);
+    }
+    db.prepare("INSERT INTO settings (key, value) VALUES (?, datetime('now'))").run(KEY);
   });
 }
 

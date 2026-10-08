@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProductIcon } from "./icons";
 
 const THEMES: Record<string, { bg: string; fg: string }> = {
@@ -15,10 +16,10 @@ export default function ProductVisual({
 }: { icon: string; image?: string | null; name: string; category: string; size?: "sm" | "md" | "lg"; priority?: boolean }) {
   if (image) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={image} alt={name} width={1000} height={1000} decoding="async"
-        loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : "auto"}
+      <Image
+        src={image} alt={name} width={800} height={800}
+        sizes={size === "lg" ? "(min-width: 1024px) 50vw, 100vw" : size === "sm" ? "96px" : "(min-width: 1280px) 220px, (min-width: 640px) 30vw, 50vw"}
+        priority={priority} unoptimized={!image.startsWith("/")}
         className="aspect-square w-full rounded-xl bg-stone-100 object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
     );

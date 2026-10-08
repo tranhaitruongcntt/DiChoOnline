@@ -10,7 +10,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/90 backdrop-blur">
       <div className="bg-brand-700 text-center text-xs text-brand-50">
-        <p className="container-x flex items-center justify-center gap-1.5 py-1.5"><Truck className="h-3.5 w-3.5" aria-hidden /> Miễn phí giao hàng cho đơn từ 300.000đ · Hotline <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="font-semibold underline-offset-2 hover:underline">{site.phone}</a></p>
+        <p className="container-x flex items-center justify-center gap-1.5 py-1.5"><Truck className="h-3.5 w-3.5" aria-hidden /> Miễn phí giao hàng cho đơn từ 300.000đ<span className="hidden sm:inline">&nbsp;· Hotline&nbsp;</span><a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hidden font-semibold underline-offset-2 hover:underline sm:inline">{site.phone}</a></p>
       </div>
       <div className="container-x flex items-center gap-3 py-3 sm:gap-6">
         <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${site.name} – Trang chủ`}>

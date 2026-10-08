@@ -2,13 +2,21 @@ import { CreditCard, Flame, RefreshCw, ShieldCheck, Sprout, Truck, type LucideIc
 import { ProductIcon } from "@/components/icons";
 import { categoryTheme } from "@/components/ProductVisual";
 import Link from "next/link";
+import Image from "next/image";
 import { ProductGrid } from "@/components/ProductCard";
 import { getCategories, getDeals, getFeaturedProducts } from "@/lib/catalog";
+
+const HERO = [
+  { src: "/images/products/rau-muong-huu-co.webp" },
+  { src: "/images/products/ca-chua-bi-da-lat.webp" },
+  { src: "/images/products/ca-hoi-na-uy.webp" },
+];
 
 export default function HomePage() {
   const categories = getCategories();
   const featured = getFeaturedProducts(10);
   const deals = getDeals(5);
+  const maxDiscount = Math.max(0, ...deals.map((d) => Math.round((1 - d.price / (d.compare_price ?? d.price)) * 100)));
 
   return (
     <>
@@ -28,13 +36,27 @@ export default function HomePage() {
               <Link href="/danh-muc/rau-cu" className="btn bg-white px-6 py-3 text-base text-brand-800 shadow-lg hover:bg-brand-50">Mua sắm ngay</Link>
               <a href="#uu-dai" className="btn px-6 py-3 text-base text-white ring-1 ring-white/50 hover:bg-white/10">Xem ưu đãi</a>
             </div>
+            <div aria-hidden className="mt-8 grid grid-cols-3 gap-3 md:hidden">
+              {HERO.map((h) => (
+                <div key={h.src} className="relative aspect-square overflow-hidden rounded-2xl ring-2 ring-white/30">
+                  <Image src={h.src} alt="" fill sizes="33vw" className="object-cover" />
+                </div>
+              ))}
+            </div>
           </div>
-          <div aria-hidden className="hidden grid-cols-3 gap-4 md:grid">
-            {["leafy-green", "cherry", "carrot", "citrus", "shrimp", "beef", "grape", "egg", "fish"].map((k, i) => (
-              <div key={k} className={`grid aspect-square place-items-center rounded-3xl bg-white/15 shadow-lg ring-1 ring-white/20 backdrop-blur ${i % 2 ? "translate-y-4" : ""}`}>
-                <ProductIcon name={k} className="h-14 w-14 text-white" strokeWidth={1.25} />
-              </div>
-            ))}
+          <div aria-hidden className="relative hidden md:block">
+            <div className="grid grid-cols-2 gap-4">
+              {HERO.map((h, i) => (
+                <div key={h.src} className={`relative overflow-hidden rounded-3xl shadow-2xl ring-4 ring-white/20 ${i === 0 ? "row-span-2 aspect-[3/4.2]" : "aspect-[4/3]"}`}>
+                  <Image src={h.src} alt="" fill priority={i === 0} sizes="(min-width: 1280px) 300px, 25vw" className="object-cover" />
+                </div>
+              ))}
+            </div>
+            <div className="absolute -left-6 bottom-10 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-stone-800 shadow-xl">
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-700"><Truck className="h-5 w-5" /></span>
+              <span className="text-sm leading-tight"><strong className="block">Giao trong 2 giờ</strong><span className="text-stone-500">Toàn TP. Hồ Chí Minh</span></span>
+            </div>
+            {maxDiscount > 0 && <div className="absolute -right-3 top-6 rounded-2xl bg-accent-400 px-4 py-2 text-sm font-bold text-stone-900 shadow-xl">Giảm đến {maxDiscount}%</div>}
           </div>
         </div>
       </section>
@@ -57,13 +79,20 @@ export default function HomePage() {
 
       <section className="container-x mt-14" aria-labelledby="dm">
         <h2 id="dm" className="text-2xl font-bold text-stone-800">Danh mục sản phẩm</h2>
-        <ul className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-6">
+        <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {categories.map((c) => (
             <li key={c.id}>
-              <Link href={`/danh-muc/${c.slug}`} className="card group flex flex-col items-center gap-2 p-4 text-center transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-md">
-                <span className={`grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br transition group-hover:scale-110 ${categoryTheme(c.slug).bg}`}><ProductIcon name={c.icon} className={`h-8 w-8 ${categoryTheme(c.slug).fg}`} /></span>
-                <span className="text-sm font-semibold text-stone-700">{c.name}</span>
-                <span className="text-xs text-stone-400">{c.product_count} sản phẩm</span>
+              <Link href={`/danh-muc/${c.slug}`} className="group relative block aspect-[4/5] overflow-hidden rounded-2xl bg-stone-200 shadow-sm ring-1 ring-stone-200 transition hover:-translate-y-0.5 hover:shadow-lg">
+                {c.cover ? (
+                  <Image src={c.cover} alt="" fill sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                ) : (
+                  <span className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${categoryTheme(c.slug).bg}`}><ProductIcon name={c.icon} className={`h-12 w-12 ${categoryTheme(c.slug).fg}`} /></span>
+                )}
+                <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                <span className="absolute inset-x-0 bottom-0 p-3 text-white">
+                  <span className="flex items-center gap-1.5 text-base font-bold"><ProductIcon name={c.icon} className="h-4 w-4" />{c.name}</span>
+                  <span className="text-xs text-white/80">{c.product_count} sản phẩm</span>
+                </span>
               </Link>
             </li>
           ))}

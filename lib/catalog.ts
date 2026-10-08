@@ -1,7 +1,7 @@
 import "server-only";
 import { getDb } from "./db";
 
-export type Category = { id: number; slug: string; name: string; icon: string; description: string; product_count?: number };
+export type Category = { id: number; slug: string; name: string; icon: string; description: string; product_count?: number; cover?: string | null };
 export type Product = {
   id: number; slug: string; name: string; category_id: number; category_slug: string; category_name: string;
   price: number; compare_price: number | null; unit: string; stock: number; icon: string; image: string | null;
@@ -24,7 +24,10 @@ const sortSql = (s?: string) => SORTS[(s as SortKey) in SORTS ? (s as SortKey) :
 export function getCategories(): Category[] {
   return getDb()
     .prepare(
-      `SELECT c.*, (SELECT COUNT(*) FROM products p WHERE p.category_id = c.id AND p.is_active = 1) AS product_count
+      `SELECT c.*,
+         (SELECT COUNT(*) FROM products p WHERE p.category_id = c.id AND p.is_active = 1) AS product_count,
+         (SELECT p.image FROM products p WHERE p.category_id = c.id AND p.is_active = 1 AND p.image IS NOT NULL
+            ORDER BY p.price DESC, p.id LIMIT 1) AS cover
        FROM categories c ORDER BY c.sort_order, c.id`,
     )
     .all() as Category[];

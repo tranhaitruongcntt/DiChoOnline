@@ -100,3 +100,8 @@ CREATE TABLE IF NOT EXISTS audit_log (
   ip_hash     TEXT,
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS settings (
+  key    TEXT PRIMARY KEY,
+  value  TEXT NOT NULL
+);

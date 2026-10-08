@@ -7,6 +7,7 @@ import ProductVisual from "@/components/ProductVisual";
 import AddToCartButton from "@/components/AddToCartButton";
 import { ProductGrid, toCartProduct } from "@/components/ProductCard";
 import { getProduct, getRelatedProducts } from "@/lib/catalog";
+import { creditFor } from "@/lib/credits";
 import { formatPrice } from "@/lib/format";
 import { absoluteUrl, site } from "@/lib/site";
 
@@ -31,6 +32,7 @@ export default async function ProductPage({ params }: Props) {
   const related = getRelatedProducts(p);
   const discount = p.compare_price && p.compare_price > p.price ? Math.round((1 - p.price / p.compare_price) * 100) : 0;
   const url = absoluteUrl(`/san-pham/${p.slug}`);
+  const credit = creditFor(p.slug, p.image);
 
   return (
     <div className="container-x py-8">
@@ -39,6 +41,11 @@ export default async function ProductPage({ params }: Props) {
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
         <div className="card group p-4">
           <ProductVisual icon={p.icon} image={p.image} name={p.name} category={p.category_slug} size="lg" priority />
+          {credit && (
+            <p className="mt-2 text-xs text-stone-400">
+              Ảnh minh hoạ: <a href={credit.source} rel="nofollow noopener" target="_blank" className="hover:underline">{credit.artist || "Pexels"}</a> · <a href={credit.licenseUrl || credit.source} rel="nofollow noopener license" target="_blank" className="hover:underline">{credit.license}</a>
+            </p>
+          )}
         </div>
         <div>
           <p className="text-sm font-semibold text-brand-700">Xuất xứ: {p.origin}</p>

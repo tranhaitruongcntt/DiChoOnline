@@ -30,7 +30,7 @@ export default function AddToCartButton({ product, withQty = false }: Props) {
         </div>
       )}
       <button type="button" onClick={onAdd} className={`btn-primary flex-1 ${added ? "bg-brand-700" : ""}`} aria-label={`Thêm ${product.name} vào giỏ`}>
-        {added ? (<><Check className="h-4 w-4" aria-hidden /> Đã thêm</>) : (<><CartIcon /> Thêm vào giỏ</>)}
+        {added ? (<><Check className="h-4 w-4" aria-hidden /> Đã thêm</>) : (<><CartIcon /> {withQty ? "Thêm vào giỏ" : (<><span className="sm:hidden">Thêm</span><span className="hidden sm:inline">Thêm vào giỏ</span></>)}</>)}
       </button>
     </div>
   );

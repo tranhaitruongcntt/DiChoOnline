@@ -24,6 +24,7 @@ export default function Footer() {
             <li><Link href="/tra-cuu-don-hang" className="hover:text-brand-700">Tra cứu đơn hàng</Link></li>
             <li><Link href="/gio-hang" className="hover:text-brand-700">Giỏ hàng</Link></li>
             <li>Đổi trả trong 24h nếu sản phẩm không tươi</li>
+            <li><Link href="/nguon-anh" className="hover:text-brand-700">Nguồn hình ảnh</Link></li>
           </ul>
         </div>
         <address className="not-italic">

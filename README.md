@@ -53,6 +53,8 @@ npm run dev                   # http://localhost:3000
 
 Dữ liệu mẫu (6 danh mục, 27 sản phẩm) được nạp tự động lần chạy đầu tiên vào `./data/dicho.db`.
 
+Ảnh sản phẩm mẫu nằm trong `public/images/products/`: 25 ảnh chụp từ [Pexels](https://www.pexels.com/license/) (miễn phí dùng thương mại, danh sách nguồn ở trang `/nguon-anh`), riêng *ba rọi* và *mực ống* đang dùng ảnh minh hoạ. Thay ảnh bất kỳ lúc nào qua trang quản trị.
+
 Production:
 ```bash
 npm run build
