@@ -10,6 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: absoluteUrl("/"), lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: absoluteUrl("/danh-muc"), lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+    { url: absoluteUrl("/khuyen-mai"), lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: absoluteUrl("/gioi-thieu"), changeFrequency: "monthly", priority: 0.4 },
+    { url: absoluteUrl("/lien-he"), changeFrequency: "monthly", priority: 0.4 },
     ...categories.map((c) => ({ url: absoluteUrl(`/danh-muc/${c.slug}`), lastModified: now, changeFrequency: "daily" as const, priority: 0.8 })),
     ...products.map((p) => ({
       url: absoluteUrl(`/san-pham/${p.slug}`),

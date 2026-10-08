@@ -21,6 +21,9 @@ export default function Footer() {
         <div>
           <h2 className="font-semibold text-stone-800">Hỗ trợ</h2>
           <ul className="mt-3 space-y-2 text-sm text-stone-600">
+            <li><Link href="/gioi-thieu" className="hover:text-brand-700">Giới thiệu</Link></li>
+            <li><Link href="/khuyen-mai" className="hover:text-brand-700">Khuyến mãi</Link></li>
+            <li><Link href="/lien-he" className="hover:text-brand-700">Liên hệ & Hỏi đáp</Link></li>
             <li><Link href="/tra-cuu-don-hang" className="hover:text-brand-700">Tra cứu đơn hàng</Link></li>
             <li><Link href="/gio-hang" className="hover:text-brand-700">Giỏ hàng</Link></li>
             <li>Đổi trả trong 24h nếu sản phẩm không tươi</li>

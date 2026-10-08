@@ -85,3 +85,17 @@ export function getSitemapEntries() {
 function normalize(s: string) {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/gi, "d").toLowerCase().replace(/[^a-z0-9\s]/g, " ").trim();
 }
+
+export type MenuProduct = { id: number; slug: string; name: string; image: string | null; icon: string; price: number; unit: string };
+/** Dữ liệu cho mega menu: danh mục + vài sản phẩm tiêu biểu mỗi danh mục. */
+export function getMenuData(perCategory = 4) {
+  const stmt = getDb().prepare(
+    `SELECT id, slug, name, image, icon, price, unit FROM products
+     WHERE is_active = 1 AND category_id = ? ORDER BY is_featured DESC, image IS NULL, id LIMIT ?`,
+  );
+  return getCategories().map((c) => ({
+    ...c,
+    products: (stmt.all(c.id, perCategory) as MenuProduct[]).map((p) => ({ ...p })),
+  }));
+}
+export type MenuCategory = ReturnType<typeof getMenuData>[number];
