@@ -44,4 +44,4 @@ db.prepare(
 ).run(username, stored);
 // Đăng xuất mọi phiên cũ của tài khoản này
 db.prepare("DELETE FROM sessions WHERE admin_id = (SELECT id FROM admins WHERE username = ?)").run(username);
-console.log(`✓ Đã lưu tài khoản quản trị "${username}".`);
+console.log(`Đã lưu tài khoản quản trị "${username}".`);

@@ -1,3 +1,4 @@
+import { RefreshCw, ShieldCheck, Snowflake, Truck } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -54,15 +55,16 @@ export default async function ProductPage({ params }: Props) {
               </>
             )}
           </div>
-          <p className={`mt-2 text-sm font-medium ${p.stock > 0 ? "text-brand-700" : "text-rose-600"}`}>
-            {p.stock > 0 ? `● Còn hàng${p.stock <= 10 ? ` – chỉ còn ${p.stock}` : ""}` : "● Tạm hết hàng"}
+          <p className={`mt-2 flex items-center gap-1.5 text-sm font-medium ${p.stock > 0 ? "text-brand-700" : "text-rose-600"}`}>
+            <span className={`h-2 w-2 rounded-full ${p.stock > 0 ? "bg-brand-500" : "bg-rose-500"}`} aria-hidden />
+            {p.stock > 0 ? `Còn hàng${p.stock <= 10 ? ` – chỉ còn ${p.stock}` : ""}` : "Tạm hết hàng"}
           </p>
 
           <div className="mt-6 max-w-md"><AddToCartButton product={toCartProduct(p)} withQty /></div>
 
           <ul className="mt-8 grid gap-3 text-sm sm:grid-cols-2">
-            {["🚚 Giao nhanh trong 2 giờ", "🌱 Nguồn gốc rõ ràng", "❄️ Đóng gói giữ lạnh", "🔄 Đổi trả trong 24h"].map((t) => (
-              <li key={t} className="rounded-xl bg-white px-4 py-3 ring-1 ring-stone-200">{t}</li>
+            {([[Truck, "Giao nhanh trong 2 giờ"], [ShieldCheck, "Nguồn gốc rõ ràng"], [Snowflake, "Đóng gói giữ lạnh"], [RefreshCw, "Đổi trả trong 24h"]] as const).map(([Icon, t]) => (
+              <li key={t} className="flex items-center gap-2.5 rounded-xl bg-white px-4 py-3 ring-1 ring-stone-200"><Icon className="h-4 w-4 text-brand-600" aria-hidden />{t}</li>
             ))}
           </ul>
 

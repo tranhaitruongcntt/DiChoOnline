@@ -1,4 +1,4 @@
-# 🧺 Đi Chợ Online
+# Đi Chợ Online
 
 Website đi chợ online (thực phẩm tươi sạch) xây bằng **React / Next.js 15**, có trang quản trị đơn hàng bảo mật và tối ưu SEO cho Google.
 
@@ -14,7 +14,9 @@ Website đi chợ online (thực phẩm tươi sạch) xây bằng **React / Nex
 - Dashboard: đơn hôm nay, doanh thu, biểu đồ 7 ngày, cảnh báo sắp hết hàng
 - Quản lý đơn: lọc theo trạng thái, tìm kiếm, phân trang, đổi trạng thái theo quy trình
   (Chờ xác nhận → Đã xác nhận → Đang giao → Hoàn thành / Huỷ – huỷ sẽ hoàn tồn kho), ghi chú nội bộ, lịch sử xử lý
-- Quản lý sản phẩm: thêm/sửa giá, giá gốc, tồn kho, ẩn/hiện, nổi bật
+- Quản lý sản phẩm: thêm/sửa giá, giá gốc, tồn kho, ẩn/hiện, nổi bật, chọn icon hoặc URL ảnh
+
+Giao diện dùng bộ icon SVG [lucide-react](https://lucide.dev) (không dùng emoji).
 
 ## Bảo mật
 - Mật khẩu admin băm bằng **scrypt** + so sánh thời gian hằng (chống dò tài khoản)

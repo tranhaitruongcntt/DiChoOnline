@@ -1,3 +1,4 @@
+import { SearchX } from "lucide-react";
 import type { Metadata } from "next";
 import { ProductGrid } from "@/components/ProductCard";
 import SortLinks from "@/components/SortLinks";
@@ -29,7 +30,7 @@ export default async function SearchPage({ searchParams }: Props) {
           <ProductGrid products={results} />
         ) : (
           <div className="card p-12 text-center">
-            <p className="text-5xl" aria-hidden>🔍</p>
+            <SearchX className="mx-auto h-12 w-12 text-stone-300" strokeWidth={1.5} aria-hidden />
             <p className="mt-3 text-stone-600">{q ? "Không tìm thấy sản phẩm phù hợp. Hãy thử từ khoá khác, ví dụ “rau”, “tôm”, “xoài”." : "Nhập từ khoá vào ô tìm kiếm phía trên."}</p>
           </div>
         )}

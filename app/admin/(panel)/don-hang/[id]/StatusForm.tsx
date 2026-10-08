@@ -1,5 +1,7 @@
 "use client";
 
+import { Check } from "lucide-react";
+
 import { useActionState } from "react";
 import { changeStatusAction } from "../actions";
 import { ORDER_STATUSES, type OrderStatus } from "@/lib/format";
@@ -23,7 +25,7 @@ export default function StatusForm({ id, options }: { id: number; options: Order
       </div>
       <input name="note" maxLength={300} placeholder="Ghi chú (tuỳ chọn)" className="input" />
       {state.error && <p role="alert" className="text-sm text-rose-600">{state.error}</p>}
-      {state.ok && <p className="text-sm text-brand-700">✓ Đã cập nhật</p>}
+      {state.ok && <p className="flex items-center gap-1.5 text-sm text-brand-700"><Check className="h-4 w-4" aria-hidden />Đã cập nhật</p>}
       <button className="btn-primary w-full" disabled={pending}>{pending ? "Đang lưu…" : "Cập nhật"}</button>
     </form>
   );

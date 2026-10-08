@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -23,7 +24,7 @@ export default async function EditProduct({ params }: { params: Promise<{ id: st
   const categories = getCategories().map(({ id, name }) => ({ id, name }));
   return (
     <>
-      <Link href="/admin/san-pham" className="text-sm text-stone-500 hover:text-brand-700">← Danh sách sản phẩm</Link>
+      <Link href="/admin/san-pham" className="inline-flex items-center gap-1 text-sm text-stone-500 hover:text-brand-700"><ArrowLeft className="h-4 w-4" aria-hidden />Danh sách sản phẩm</Link>
       <h1 className="mt-2 text-2xl font-bold">{product ? `Sửa: ${product.name}` : "Thêm sản phẩm"}</h1>
       <ProductForm product={product} categories={categories} />
     </>

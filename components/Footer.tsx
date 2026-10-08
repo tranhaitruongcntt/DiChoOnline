@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Clock, Mail, MapPin, Phone, ShoppingBasket } from "lucide-react";
 import { getCategories } from "@/lib/catalog";
 import { site } from "@/lib/site";
 
@@ -8,7 +9,7 @@ export default function Footer() {
     <footer className="mt-16 border-t border-stone-200 bg-white">
       <div className="container-x grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="text-lg font-extrabold text-brand-800">🧺 {site.name}</p>
+          <p className="flex items-center gap-2 text-lg font-extrabold text-brand-800"><ShoppingBasket className="h-5 w-5" aria-hidden /> {site.name}</p>
           <p className="mt-2 text-sm leading-relaxed text-stone-600">{site.description}</p>
         </div>
         <div>
@@ -28,10 +29,10 @@ export default function Footer() {
         <address className="not-italic">
           <h2 className="font-semibold text-stone-800">Liên hệ</h2>
           <ul className="mt-3 space-y-2 text-sm text-stone-600">
-            <li>📍 {site.address}</li>
-            <li>📞 <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-brand-700">{site.phone}</a></li>
-            <li>✉️ <a href={`mailto:${site.email}`} className="hover:text-brand-700">{site.email}</a></li>
-            <li>🕖 6:00 – 21:00 hằng ngày</li>
+            <li className="flex gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden />{site.address}</li>
+            <li className="flex gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden /><a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-brand-700">{site.phone}</a></li>
+            <li className="flex gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden /><a href={`mailto:${site.email}`} className="hover:text-brand-700">{site.email}</a></li>
+            <li className="flex gap-2"><Clock className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden />6:00 – 21:00 hằng ngày</li>
           </ul>
         </address>
       </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { PRODUCT_ICONS, isProductIcon } from "@/components/icons";
+
 import { useActionState } from "react";
 import { saveProductAction } from "../actions";
 import type { Product } from "@/lib/catalog";
@@ -23,7 +25,11 @@ export default function ProductForm({ product: p, categories }: { product: Produ
       <F fe={fe} name="compare_price" label="Giá gốc (để hiện giảm giá)"><input id="compare_price" name="compare_price" type="number" min={0} step={1000} defaultValue={p?.compare_price ?? ""} className="input" /></F>
       <F fe={fe} name="unit" label="Đơn vị *"><input id="unit" name="unit" required maxLength={30} defaultValue={p?.unit ?? "kg"} className="input" /></F>
       <F fe={fe} name="stock" label="Tồn kho *"><input id="stock" name="stock" type="number" min={0} required defaultValue={p?.stock ?? 0} className="input" /></F>
-      <F fe={fe} name="icon" label="Biểu tượng (emoji)"><input id="icon" name="icon" maxLength={8} defaultValue={p?.icon ?? "🥬"} className="input" /></F>
+      <F fe={fe} name="icon" label="Biểu tượng (khi chưa có ảnh)">
+        <select id="icon" name="icon" defaultValue={p && isProductIcon(p.icon) ? p.icon : "basket"} className="input">
+          {Object.entries(PRODUCT_ICONS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
+        </select>
+      </F>
       <F fe={fe} name="origin" label="Xuất xứ"><input id="origin" name="origin" maxLength={60} defaultValue={p?.origin} className="input" /></F>
       <F fe={fe} name="image" label="URL ảnh (https://…, tuỳ chọn)" span><input id="image" name="image" type="url" maxLength={500} defaultValue={p?.image ?? ""} className="input" /></F>
       <F fe={fe} name="short_desc" label="Mô tả ngắn (hiển thị & SEO)" span><input id="short_desc" name="short_desc" maxLength={200} defaultValue={p?.short_desc} className="input" /></F>

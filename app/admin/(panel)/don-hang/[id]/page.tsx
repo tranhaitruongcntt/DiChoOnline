@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -19,7 +20,7 @@ export default async function OrderDetail({ params }: { params: Promise<{ id: st
 
   return (
     <>
-      <Link href="/admin/don-hang" className="text-sm text-stone-500 hover:text-brand-700">← Danh sách đơn hàng</Link>
+      <Link href="/admin/don-hang" className="inline-flex items-center gap-1 text-sm text-stone-500 hover:text-brand-700"><ArrowLeft className="h-4 w-4" aria-hidden />Danh sách đơn hàng</Link>
       <div className="mt-2 flex flex-wrap items-center gap-3">
         <h1 className="font-mono text-2xl font-bold">{o.code}</h1>
         <span className={`badge ${ORDER_STATUSES[o.status].color}`}>{ORDER_STATUSES[o.status].label}</span>

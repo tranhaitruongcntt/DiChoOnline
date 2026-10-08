@@ -1,3 +1,4 @@
+import { ArrowRight, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { getDashboardStats, listOrders } from "@/lib/orders";
@@ -29,7 +30,7 @@ export default async function Dashboard() {
               {s.daily.map((d) => (
                 <li key={d.d} className="flex flex-1 flex-col items-center gap-1 text-xs text-stone-500">
                   <span className="font-medium text-stone-700">{d.n} đơn</span>
-                  <div className="w-full rounded-t-md bg-brand-500" style={{ height: `${Math.max(4, (d.v / maxV) * 120)}px` }} title={formatPrice(d.v)} />
+                  <div className="w-full max-w-14 rounded-t-md bg-brand-500" style={{ height: `${Math.max(4, (d.v / maxV) * 120)}px` }} title={formatPrice(d.v)} />
                   <span>{d.d.slice(5).split("-").reverse().join("/")}</span>
                 </li>
               ))}
@@ -37,7 +38,7 @@ export default async function Dashboard() {
           ) : <p className="mt-4 text-sm text-stone-500">Chưa có dữ liệu.</p>}
         </section>
         <section className="card p-5">
-          <h2 className="font-semibold">⚠️ Sắp hết hàng</h2>
+          <h2 className="flex items-center gap-2 font-semibold"><TriangleAlert className="h-4 w-4 text-amber-500" aria-hidden /> Sắp hết hàng</h2>
           <ul className="mt-3 divide-y divide-stone-100 text-sm">
             {s.lowStock.length ? s.lowStock.map((p) => (
               <li key={p.id} className="flex justify-between py-2">
@@ -50,7 +51,7 @@ export default async function Dashboard() {
       </div>
 
       <section className="card mt-6 overflow-hidden">
-        <div className="flex items-center justify-between p-5"><h2 className="font-semibold">Đơn hàng mới</h2><Link href="/admin/don-hang" className="text-sm text-brand-700 hover:underline">Xem tất cả →</Link></div>
+        <div className="flex items-center justify-between p-5"><h2 className="font-semibold">Đơn hàng mới</h2><Link href="/admin/don-hang" className="flex items-center gap-1 text-sm text-brand-700 hover:underline">Xem tất cả <ArrowRight className="h-4 w-4" aria-hidden /></Link></div>
         <OrdersTable rows={recent} />
       </section>
     </>

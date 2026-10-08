@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
@@ -42,8 +43,8 @@ export default async function OrdersPage({ searchParams }: Props) {
         <div className="flex items-center justify-between border-t border-stone-100 px-5 py-3 text-sm text-stone-500">
           <span>{data.total} đơn · Trang {data.page}/{data.pageCount}</span>
           <span className="flex gap-2">
-            {data.page > 1 && <Link className="btn-outline py-1.5" href={link({ page: String(data.page - 1) })}>← Trước</Link>}
-            {data.page < data.pageCount && <Link className="btn-outline py-1.5" href={link({ page: String(data.page + 1) })}>Sau →</Link>}
+            {data.page > 1 && <Link className="btn-outline py-1.5" href={link({ page: String(data.page - 1) })}><ChevronLeft className="h-4 w-4" aria-hidden />Trước</Link>}
+            {data.page < data.pageCount && <Link className="btn-outline py-1.5" href={link({ page: String(data.page + 1) })}>Sau<ChevronRight className="h-4 w-4" aria-hidden /></Link>}
           </span>
         </div>
       </section>

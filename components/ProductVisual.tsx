@@ -1,25 +1,31 @@
-const GRADIENTS: Record<string, string> = {
-  "rau-cu": "from-lime-100 via-emerald-50 to-green-100",
-  "trai-cay": "from-orange-100 via-amber-50 to-rose-100",
-  "thit-tuoi": "from-rose-100 via-red-50 to-orange-100",
-  "hai-san": "from-sky-100 via-cyan-50 to-blue-100",
-  "trung-sua": "from-yellow-100 via-amber-50 to-stone-100",
-  "do-kho-gia-vi": "from-amber-100 via-orange-50 to-yellow-100",
+import { ProductIcon } from "./icons";
+
+const THEMES: Record<string, { bg: string; fg: string }> = {
+  "rau-cu": { bg: "from-lime-50 via-emerald-50 to-green-100", fg: "text-emerald-600" },
+  "trai-cay": { bg: "from-orange-50 via-amber-50 to-rose-100", fg: "text-orange-500" },
+  "thit-tuoi": { bg: "from-rose-50 via-red-50 to-orange-100", fg: "text-rose-500" },
+  "hai-san": { bg: "from-sky-50 via-cyan-50 to-blue-100", fg: "text-sky-600" },
+  "trung-sua": { bg: "from-yellow-50 via-amber-50 to-stone-100", fg: "text-amber-500" },
+  "do-kho-gia-vi": { bg: "from-amber-50 via-orange-50 to-yellow-100", fg: "text-amber-700" },
 };
+export const categoryTheme = (slug: string) => THEMES[slug] ?? { bg: "from-stone-50 to-stone-100", fg: "text-brand-600" };
 
 export default function ProductVisual({
   icon, image, name, category, size = "md",
-}: { icon: string; image?: string | null; name: string; category: string; size?: "md" | "lg" }) {
-  const g = GRADIENTS[category] ?? "from-stone-100 to-stone-50";
+}: { icon: string; image?: string | null; name: string; category: string; size?: "sm" | "md" | "lg" }) {
   if (image) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={image} alt={name} loading="lazy" decoding="async" className="aspect-square w-full rounded-xl object-cover" />;
   }
+  const t = categoryTheme(category);
+  const ring = { sm: "w-3/4", md: "w-1/2", lg: "w-2/5" }[size];
   return (
-    <div role="img" aria-label={name} className={`grid aspect-square w-full place-items-center rounded-xl bg-gradient-to-br ${g}`}>
-      <span aria-hidden className={`${size === "lg" ? "text-[9rem]" : "text-6xl"} drop-shadow-sm transition-transform duration-300 group-hover:scale-110`}>
-        {icon}
-      </span>
+    <div role="img" aria-label={name} className={`relative grid aspect-square w-full place-items-center overflow-hidden rounded-xl bg-gradient-to-br ${t.bg}`}>
+      <div aria-hidden className="absolute -right-6 -top-6 h-1/2 w-1/2 rounded-full bg-white/40" />
+      <div aria-hidden className="absolute -bottom-8 -left-8 h-1/2 w-1/2 rounded-full bg-white/30" />
+      <div className={`relative grid aspect-square ${ring} place-items-center rounded-full bg-white/80 shadow-sm ring-1 ring-white transition-transform duration-300 group-hover:scale-105`}>
+        <ProductIcon name={icon} className={`h-1/2 w-1/2 ${t.fg}`} strokeWidth={size === "sm" ? 2 : 1.5} />
+      </div>
     </div>
   );
 }

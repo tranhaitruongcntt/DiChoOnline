@@ -1,5 +1,7 @@
 "use client";
 
+import { MapPin, User, Wallet } from "lucide-react";
+
 import Link from "next/link";
 import { useActionState } from "react";
 import { useCart } from "@/components/CartProvider";
@@ -31,7 +33,7 @@ export default function CheckoutForm() {
 
         <fieldset className="card grid gap-4 p-5 sm:grid-cols-2">
           <legend className="sr-only">Người nhận</legend>
-          <h2 className="text-lg font-bold sm:col-span-2">👤 Người nhận</h2>
+          <h2 className="flex items-center gap-2 text-lg font-bold sm:col-span-2"><User className="h-5 w-5 text-brand-600" aria-hidden /> Người nhận</h2>
           <div>
             <label htmlFor="customer_name" className="label">Họ và tên *</label>
             <input id="customer_name" name="customer_name" required minLength={2} maxLength={80} autoComplete="name" className="input" {...aria("customer_name")} />
@@ -51,7 +53,7 @@ export default function CheckoutForm() {
 
         <fieldset className="card grid gap-4 p-5 sm:grid-cols-2">
           <legend className="sr-only">Giao hàng</legend>
-          <h2 className="text-lg font-bold sm:col-span-2">📍 Giao hàng</h2>
+          <h2 className="flex items-center gap-2 text-lg font-bold sm:col-span-2"><MapPin className="h-5 w-5 text-brand-600" aria-hidden /> Giao hàng</h2>
           <div className="sm:col-span-2">
             <label htmlFor="address" className="label">Địa chỉ (số nhà, đường, phường) *</label>
             <input id="address" name="address" required minLength={5} maxLength={200} autoComplete="street-address" className="input" {...aria("address")} />
@@ -79,7 +81,7 @@ export default function CheckoutForm() {
 
         <fieldset className="card space-y-3 p-5">
           <legend className="sr-only">Thanh toán</legend>
-          <h2 className="text-lg font-bold">💳 Thanh toán</h2>
+          <h2 className="flex items-center gap-2 text-lg font-bold"><Wallet className="h-5 w-5 text-brand-600" aria-hidden /> Thanh toán</h2>
           {(Object.keys(PAYMENT_METHODS) as (keyof typeof PAYMENT_METHODS)[]).map((k, i) => (
             <label key={k} className="flex cursor-pointer items-center gap-3 rounded-xl border border-stone-200 p-4 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50">
               <input type="radio" name="payment_method" value={k} defaultChecked={i === 0} className="accent-brand-600" />
@@ -99,7 +101,7 @@ export default function CheckoutForm() {
         <OrderSummary subtotal={subtotal}>
           <ul className="mt-4 max-h-60 space-y-2 overflow-auto border-t border-stone-100 pt-4 text-sm">
             {items.map((i) => (
-              <li key={i.id} className="flex justify-between gap-2"><span className="truncate">{i.icon} {i.name} × {i.qty}</span><span className="shrink-0">{formatPrice(i.price * i.qty)}</span></li>
+              <li key={i.id} className="flex justify-between gap-2"><span className="truncate">{i.name} × {i.qty}</span><span className="shrink-0">{formatPrice(i.price * i.qty)}</span></li>
             ))}
           </ul>
           <button type="submit" disabled={pending} className="btn-primary mt-4 w-full py-3 text-base">{pending ? "Đang đặt hàng…" : "Xác nhận đặt hàng"}</button>

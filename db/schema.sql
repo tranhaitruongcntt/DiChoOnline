@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS categories (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
   slug        TEXT NOT NULL UNIQUE,
   name        TEXT NOT NULL,
-  icon        TEXT NOT NULL DEFAULT '🛒',
+  icon        TEXT NOT NULL DEFAULT 'basket',
   description TEXT NOT NULL DEFAULT '',
   sort_order  INTEGER NOT NULL DEFAULT 0
 );
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS products (
   compare_price  INTEGER CHECK (compare_price IS NULL OR compare_price >= 0),
   unit           TEXT NOT NULL DEFAULT 'kg',
   stock          INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
-  icon           TEXT NOT NULL DEFAULT '🥬',
+  icon           TEXT NOT NULL DEFAULT 'basket',
   image          TEXT,
   origin         TEXT NOT NULL DEFAULT '',
   short_desc     TEXT NOT NULL DEFAULT '',

@@ -7,6 +7,7 @@ import { audit, requireAdmin } from "@/lib/auth";
 import { saveProduct, slugTaken } from "@/lib/admin-products";
 import { getCategories } from "@/lib/catalog";
 import { slugify } from "@/lib/format";
+import { isProductIcon } from "@/components/icons";
 
 const money = z.coerce.number().int("Phải là số nguyên").min(0).max(100_000_000);
 
@@ -18,7 +19,7 @@ const schema = z.object({
   compare_price: z.union([z.literal(""), money]).transform((v) => (v === "" || v === 0 ? null : v)),
   unit: z.string().trim().min(1, "Nhập đơn vị").max(30),
   stock: z.coerce.number().int().min(0).max(100_000),
-  icon: z.string().trim().min(1).max(8),
+  icon: z.string().refine(isProductIcon, "Biểu tượng không hợp lệ"),
   image: z.union([z.literal(""), z.string().trim().url().max(500).refine((u) => u.startsWith("https://"), "Ảnh phải dùng https://")]).transform((v) => v || null),
   origin: z.string().trim().max(60),
   short_desc: z.string().trim().max(200),
