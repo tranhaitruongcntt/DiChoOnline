@@ -4,13 +4,14 @@ import { ProductIcon } from "@/components/icons";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import SortLinks from "@/components/SortLinks";
+import FilterBar from "@/components/FilterBar";
 import { ProductGrid } from "@/components/ProductCard";
 import { getCategories, getCategory, getProductsByCategory } from "@/lib/catalog";
 import Image from "next/image";
 import Link from "next/link";
 import { absoluteUrl } from "@/lib/site";
 
-type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ sap_xep?: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ sap_xep?: string; gia?: string; giam_gia?: string; con_hang?: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = getCategory((await params).slug);
@@ -26,10 +27,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { sap_xep } = await searchParams;
+  const sp = await searchParams;
+  const { sap_xep } = sp;
+  const filterParams = { sap_xep, gia: sp.gia, giam_gia: sp.giam_gia ? "1" : undefined, con_hang: sp.con_hang ? "1" : undefined };
   const c = getCategory(slug);
   if (!c) notFound();
-  const products = getProductsByCategory(c.id, sap_xep);
+  const products = getProductsByCategory(c.id, sap_xep, { price: sp.gia, sale: !!sp.giam_gia, inStock: !!sp.con_hang });
   const categories = getCategories();
   const cover = categories.find((o) => o.id === c.id)?.cover;
 
@@ -62,12 +65,20 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           ))}
         </ul>
       </nav>
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-stone-500">{products.length} sản phẩm</p>
-        <SortLinks basePath={`/danh-muc/${c.slug}`} current={sap_xep} />
+      <div className="mt-6 space-y-3">
+        <FilterBar basePath={`/danh-muc/${c.slug}`} params={filterParams} />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-stone-500"><strong className="text-stone-800">{products.length}</strong> sản phẩm</p>
+          <SortLinks basePath={`/danh-muc/${c.slug}`} current={sap_xep} extra={Object.fromEntries(Object.entries({ gia: filterParams.gia, giam_gia: filterParams.giam_gia, con_hang: filterParams.con_hang }).filter(([, v]) => v)) as Record<string, string>} />
+        </div>
       </div>
       <div className="mt-5">
-        {products.length ? <ProductGrid products={products} /> : <p className="card p-10 text-center text-stone-500">Danh mục đang được cập nhật sản phẩm.</p>}
+        {products.length ? <ProductGrid products={products} /> : (
+          <div className="card p-10 text-center">
+            <p className="text-stone-600">Không có sản phẩm phù hợp với bộ lọc.</p>
+            <Link href={`/danh-muc/${c.slug}`} className="btn-outline mt-4">Xem tất cả {c.name.toLowerCase()}</Link>
+          </div>
+        )}
       </div>
       <JsonLd
         data={{

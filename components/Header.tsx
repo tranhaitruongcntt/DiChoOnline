@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Headset, Search, ShoppingBasket, Truck } from "lucide-react";
+import { Headset, ShoppingBasket, Truck } from "lucide-react";
+import SearchBox from "./SearchBox";
 import CartButton from "./CartButton";
 import MegaMenu from "./MegaMenu";
 import MobileDrawer from "./MobileDrawer";
@@ -24,11 +25,7 @@ export default function Header() {
             <span className="hidden text-[11px] text-stone-500 sm:block">Tươi mỗi ngày · Giao 2 giờ</span>
           </span>
         </Link>
-        <form action="/tim-kiem" method="get" role="search" className="relative order-last basis-full md:order-none md:flex-1 md:basis-auto">
-          <label htmlFor="q" className="sr-only">Tìm sản phẩm</label>
-          <input id="q" name="q" type="search" maxLength={80} placeholder="Tìm rau, thịt, cá, trái cây…" className="input rounded-full bg-stone-100 pl-10 focus:bg-white" />
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" aria-hidden />
-        </form>
+        <SearchBox />
         <a href={tel} className="group hidden items-center gap-2.5 lg:flex">
           <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand-100"><Headset className="h-5 w-5" aria-hidden /></span>
           <span className="leading-tight">

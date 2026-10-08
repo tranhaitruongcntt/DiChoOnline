@@ -18,10 +18,18 @@ export default function MegaMenu({ categories, maxDiscount }: { categories: Menu
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const wrap = useRef<HTMLDivElement>(null);
 
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    const i = categories.findIndex((c) => pathname === `/danh-muc/${c.slug}`);
+    if (i >= 0) setActive(i);
+  }, [pathname, categories]);
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      wrap.current?.querySelector<HTMLButtonElement>("button[aria-controls=mega-menu]")?.focus();
+    };
     const onClick = (e: MouseEvent) => !wrap.current?.contains(e.target as Node) && setOpen(false);
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onClick);

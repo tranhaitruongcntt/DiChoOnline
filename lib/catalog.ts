@@ -48,8 +48,22 @@ export function getDeals(limit = 4): Product[] {
     .all(limit) as Product[];
 }
 
-export function getProductsByCategory(categoryId: number, sort?: string): Product[] {
-  return getDb().prepare(`${PRODUCT_SELECT} WHERE p.is_active = 1 AND p.category_id = ? ORDER BY ${sortSql(sort)}`).all(categoryId) as Product[];
+export const PRICE_RANGES = {
+  "duoi-50k": { label: "Dưới 50.000đ", min: 0, max: 49_999 },
+  "50k-150k": { label: "50.000đ – 150.000đ", min: 50_000, max: 150_000 },
+  "tren-150k": { label: "Trên 150.000đ", min: 150_001, max: Number.MAX_SAFE_INTEGER },
+} as const;
+export type PriceRange = keyof typeof PRICE_RANGES;
+export type ProductFilters = { price?: string; sale?: boolean; inStock?: boolean };
+
+export function getProductsByCategory(categoryId: number, sort?: string, f: ProductFilters = {}): Product[] {
+  const where = ["p.is_active = 1", "p.category_id = ?"];
+  const params: number[] = [categoryId];
+  const range = f.price && f.price in PRICE_RANGES ? PRICE_RANGES[f.price as PriceRange] : null;
+  if (range) { where.push("p.price BETWEEN ? AND ?"); params.push(range.min, range.max); }
+  if (f.sale) where.push("p.compare_price > p.price");
+  if (f.inStock) where.push("p.stock > 0");
+  return getDb().prepare(`${PRODUCT_SELECT} WHERE ${where.join(" AND ")} ORDER BY ${sortSql(sort)}`).all(...params) as Product[];
 }
 
 export function getProduct(slug: string): Product | undefined {

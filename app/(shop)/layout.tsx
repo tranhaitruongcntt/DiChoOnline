@@ -4,6 +4,7 @@ import JsonLd from "@/components/JsonLd";
 import { CartProvider } from "@/components/CartProvider";
 import CartToast from "@/components/CartToast";
 import MobileNav from "@/components/MobileNav";
+import BackToTop from "@/components/BackToTop";
 import { absoluteUrl, site } from "@/lib/site";
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
@@ -17,6 +18,7 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
       </div>
       <CartToast />
       <MobileNav />
+      <BackToTop />
       <JsonLd
         data={[
           {
