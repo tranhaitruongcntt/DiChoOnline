@@ -1,0 +1,38 @@
+import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
+import { Be_Vietnam_Pro } from "next/font/google";
+import { site } from "@/lib/site";
+import "./globals.css";
+
+const font = Be_Vietnam_Pro({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-be-vietnam",
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
+  title: { default: `${site.name} – ${site.tagline}`, template: `%s | ${site.name}` },
+  description: site.description,
+  applicationName: site.name,
+  keywords: ["đi chợ online", "thực phẩm sạch", "rau củ tươi", "giao hàng nhanh", "siêu thị online", "TP.HCM"],
+  alternates: { canonical: "/" },
+  openGraph: { type: "website", locale: site.locale, siteName: site.name, url: "/", title: site.name, description: site.description },
+  twitter: { card: "summary_large_image", title: site.name, description: site.description },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+  verification: process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : undefined,
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = { themeColor: "#1a7e4f", width: "device-width", initialScale: 1 };
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Đọc headers để trang luôn render động → Next.js gắn nonce CSP cho mọi script.
+  await headers();
+  return (
+    <html lang="vi" className={font.variable}>
+      <body className="min-h-dvh font-sans">{children}</body>
+    </html>
+  );
+}
