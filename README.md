@@ -54,7 +54,7 @@ Yêu cầu **Node.js ≥ 22.13** (dùng SQLite tích hợp sẵn của Node, kh�
 npm install
 cp .env.example .env          # sửa NEXT_PUBLIC_SITE_URL theo tên miền thật
 npm run create-admin -- admin # nhập mật khẩu ≥ 12 ký tự
-npm run dev                   # http://localhost:3000
+npm run dev                   # http://localhost:3001
 ```
 
 Dữ liệu mẫu (6 danh mục, 27 sản phẩm) được nạp tự động lần chạy đầu tiên vào `./data/dicho.db`.
