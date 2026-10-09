@@ -10,8 +10,11 @@ declare global {
   var __dichoDb: DatabaseSync | undefined;
 }
 
+/** Đường dẫn file CSDL. Trên Vercel chỉ /tmp được phép ghi (dữ liệu tạm, mất khi máy chủ khởi động lại). */
+export const dbPath = () => process.env.DATABASE_PATH || (process.env.VERCEL ? "/tmp/dicho.db" : "./data/dicho.db");
+
 function open(): DatabaseSync {
-  const file = path.resolve(process.env.DATABASE_PATH || "./data/dicho.db");
+  const file = path.resolve(dbPath());
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const db = new DatabaseSync(file);
   db.exec("PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000; PRAGMA foreign_keys = ON;");

@@ -3,13 +3,14 @@ import { randomBytes } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import sharp, { type Metadata } from "sharp";
+import { dbPath } from "./db";
 
 export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 export const UPLOAD_URL_PREFIX = "/anh/";
 export const UPLOAD_NAME_RE = /^[a-f0-9]{32}\.webp$/;
 const ALLOWED_FORMATS = new Set(["jpeg", "png", "webp", "avif", "heif"]);
 
-export const uploadDir = () => path.resolve(path.dirname(process.env.DATABASE_PATH || "./data/dicho.db"), "uploads");
+export const uploadDir = () => path.resolve(path.dirname(dbPath()), "uploads");
 
 export class ImageError extends Error {}
 

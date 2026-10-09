@@ -75,6 +75,20 @@ npm start
 5. Khai báo `https://<tên-miền>/sitemap.xml` trong Google Search Console.
 6. Giới hạn tần suất hiện lưu trong bộ nhớ – nếu chạy nhiều instance, chuyển sang Redis (`lib/rate-limit.ts`).
 
+## Chạy thử trên Vercel (chế độ demo)
+
+Vercel không có ổ đĩa lưu trữ lâu dài, nên website tự dùng `/tmp/dicho.db`: **đơn hàng, tài khoản admin và ảnh tải lên sẽ bị xoá mỗi khi Vercel khởi động lại máy chủ**. Phù hợp để xem giao diện, demo; không dùng để bán hàng thật.
+
+1. Vào https://vercel.com → **Add New… → Project** → **Import** repo `DiChoOnline`.
+2. Ở **Environment Variables** thêm:
+   - `ADMIN_USERNAME` = `admin`
+   - `ADMIN_PASSWORD` = mật khẩu ≥ 12 ký tự (admin được tạo lại tự động sau mỗi lần khởi động)
+   - `NEXT_PUBLIC_SITE_URL` = link Vercel, ví dụ `https://dichoonline.vercel.app`
+   - `IP_SALT` = chuỗi ngẫu nhiên
+3. Bấm **Deploy**. Nếu code nằm ở nhánh khác nhánh chính, vào **Settings → Git → Production Branch** đổi sang nhánh đó rồi deploy lại.
+
+Để lưu dữ liệu lâu dài, chạy trên VPS (xem mục trên) hoặc chuyển CSDL sang dịch vụ có lưu trữ (Turso, Neon/Postgres) và ảnh sang Vercel Blob.
+
 ## Cấu trúc
 ```
 app/(shop)/        Cửa hàng: trang chủ, danh mục, sản phẩm, giỏ hàng, thanh toán, tra cứu

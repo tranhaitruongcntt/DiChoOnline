@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
   serverExternalPackages: [],
+  // Đóng gói kèm file schema và ảnh mẫu vào hàm serverless (cần khi chạy trên Vercel)
+  outputFileTracingIncludes: {
+    "/**": ["./db/schema.sql", "./public/images/products/**"],
+  },
   experimental: {
     // Cho phép tải ảnh sản phẩm tối đa 5MB từ trang quản trị
     serverActions: { bodySizeLimit: "6mb" },

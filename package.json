@@ -4,7 +4,7 @@
   "private": true,
   "description": "Website đi chợ online - thực phẩm tươi sạch giao tận nhà",
   "engines": {
-    "node": ">=22.13"
+    "node": "22.x"
   },
   "scripts": {
     "dev": "next dev -p 3001",
