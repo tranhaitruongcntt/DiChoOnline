@@ -13,6 +13,9 @@ export function middleware(req: NextRequest) {
   // Content-Security-Policy với nonce cho mỗi request
   const nonce = btoa(crypto.randomUUID());
   const isDev = process.env.NODE_ENV !== "production";
+  // Chỉ ép nâng cấp lên HTTPS khi trang thực sự đang chạy qua HTTPS (sau Nginx/Cloudflare...).
+  // Nếu bật khi truy cập bằng http://IP-nội-bộ, trình duyệt sẽ tải CSS/JS qua https và bị lỗi mất giao diện.
+  const isHttps = req.nextUrl.protocol === "https:" || req.headers.get("x-forwarded-proto") === "https";
   const csp = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
@@ -24,7 +27,7 @@ export function middleware(req: NextRequest) {
     "base-uri 'self'",
     "form-action 'self'",
     "object-src 'none'",
-    ...(isDev ? [] : ["upgrade-insecure-requests"]),
+    ...(isHttps ? ["upgrade-insecure-requests"] : []),
   ].join("; ");
 
   const requestHeaders = new Headers(req.headers);
